@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">Bop</string>
+    <string name="profile">Profile</string>
+    <string name="record">Record</string>
+    <string name="home">Home</string>
+</resources>

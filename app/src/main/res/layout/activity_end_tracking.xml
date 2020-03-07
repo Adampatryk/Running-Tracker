@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".EndTrackingActivity"
+    >
+
+    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+        app:layout_constraintTop_toTopOf="parent"
+        android:name="com.google.android.gms.maps.MapFragment"
+        android:id="@+id/map"
+        android:layout_width="match_parent"
+        android:layout_height="300sp"/>
+
+    <TextView
+        android:id="@+id/text_view_time_label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="TIME"
+        android:textAlignment="center"
+        android:textSize="18sp"
+        app:layout_constraintTop_toBottomOf="@id/map" />
+
+    <TextView
+        android:id="@+id/text_view_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="00:00:00.0"
+        android:textAlignment="center"
+        android:textSize="70sp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/text_view_time_label"
+        tools:layout_editor_absoluteY="24dp" />
+
+    <TextView
+        android:id="@+id/text_view_distance_label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/text_view_time"
+        android:text="DISTANCE (km)"
+        android:layout_marginTop="20sp"
+        android:textSize="18sp"
+        android:textAlignment="center"
+        />
+
+    <TextView
+        android:id="@+id/text_view_distance"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/text_view_distance_label"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:textSize="70sp"
+        android:text="0.0"
+        android:textAlignment="center"/>
+
+    <TextView
+        android:id="@+id/text_view_speed_label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/text_view_distance"
+        android:text="AVG SPEED (km/h)"
+        android:layout_marginTop="20sp"
+        android:textSize="18sp"
+        android:textAlignment="center"
+        />
+
+    <TextView
+        android:id="@+id/text_view_speed"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/text_view_speed_label"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:textSize="70sp"
+        android:text="0.0"
+        android:textAlignment="center"/>
+    <TextView
+        android:id="@+id/text_view_elevation_label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/text_view_speed"
+        android:text="ELEVATION (m)"
+        android:layout_marginTop="20sp"
+        android:textSize="18sp"
+        android:textAlignment="center"
+        />
+
+    <TextView
+        android:id="@+id/text_view_elevation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/text_view_elevation_label"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:textSize="70sp"
+        android:text="0.0"
+        android:textAlignment="center"/>
+
+    <Button
+        android:id="@+id/button_choose_sport"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="CHOOSE SPORT"
+        android:padding="15sp"
+        android:background="@android:color/white"
+        android:textSize="25sp"
+        android:textColor="@color/colorPrimary"
+        app:layout_constraintBottom_toTopOf="@+id/bottom_resume_end_buttons"
+        />
+
+    <LinearLayout
+        android:id="@+id/bottom_resume_end_buttons"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/button_resume_tracking"
+            android:onClick="onResumeTrackingPressed"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="RESUME"
+            android:textSize="25sp"
+            android:background="@color/colorPrimary"
+            android:padding="15sp"
+            android:textColor="@android:color/white"/>
+
+        <Button
+            android:id="@+id/button_end_tracking"
+            android:onClick="onEndTrackingPressed"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="END"
+            android:textSize="25sp"
+            android:background="@color/colorPrimary"
+            android:padding="15sp"
+            android:textColor="@android:color/white"/>
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
