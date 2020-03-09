@@ -3,8 +3,13 @@ package com.example.bop;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.graphics.Bitmap;
 import android.location.Location;
+import android.location.LocationManager;
 import android.os.Binder;
 import android.os.IBinder;
 import android.os.Looper;
@@ -43,7 +48,6 @@ public class LocationService extends Service {
 
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
-		Toast.makeText(this, "Service Started!", Toast.LENGTH_SHORT).show();
 
 		//Start the service as a foreground service with a notification
 		startForeground(1, createNotification());
@@ -53,9 +57,8 @@ public class LocationService extends Service {
 	}
 
 	public class LocationServiceBinder extends Binder {
-		void startTracking(){
-			startLocationTracking();
-		}
+
+		boolean isPaused() { return trackedSession.isPaused();}
 
 		void resumeTracking(){
 			resumeLocationTracking();
@@ -79,6 +82,10 @@ public class LocationService extends Service {
 		}
 
 		//Getters and setters
+
+		void setImage(Bitmap bitmap) { trackedSession.setImage(bitmap);}
+
+		Bitmap getImage() { return trackedSession.getImage(); }
 
 		void setTitle(String title) { trackedSession.setTitle(title); }
 
@@ -142,8 +149,11 @@ public class LocationService extends Service {
 
 	private void resumeLocationTracking(){
 		if (trackedSession.isCreated()) {
-			trackedSession.resumeTrackingActivity();
-			fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallback, Looper.getMainLooper());
+			//If the tracked session is paused, unpause it, otherwise do nothing
+			if (trackedSession.isPaused()){
+				trackedSession.resumeTrackingActivity();
+				fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallback, Looper.getMainLooper());
+			}
 			Log.d(TAG, "resumeLocationTracking: resume requested location updates");
 		} else {
 			startLocationTracking();

@@ -26,7 +26,7 @@ public class BopProvider extends ContentProvider {
 		uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
 		uriMatcher.addURI(BopProviderContract.AUTHORITY, BopProviderContract.ACTIVITY_TABLE, ACTIVITY_ALL_INFO_CODE);
 		uriMatcher.addURI(BopProviderContract.AUTHORITY, BopProviderContract.ACTIVITY_TABLE + "/#", ACTIVITY_ID_CODE);
-		uriMatcher.addURI(BopProviderContract.AUTHORITY, BopProviderContract.ACTIVITY_TABLE + "/#/trk_points", ACTIVITY_ID_TRK_POINTS_CODE);
+		uriMatcher.addURI(BopProviderContract.AUTHORITY, BopProviderContract.TRK_POINT_TABLE, ACTIVITY_ID_TRK_POINTS_CODE);
 	}
 
 
@@ -46,10 +46,6 @@ public class BopProvider extends ContentProvider {
 
 		switch(uriMatcher.match(uri)){
 			//Case for any specific activity being queried, the ID is appended to the selection query string
-			case ACTIVITY_ID_CODE:
-				selection = selection + BopProviderContract.ACTIVITY_ID + "=" + uri.getLastPathSegment();
-
-			//Case for querying track points for a specific activity
 			case ACTIVITY_ID_TRK_POINTS_CODE:
 				return db.query(BopProviderContract.TRK_POINT_TABLE, projection, selection, selectionArgs, null, null, sortOrder);
 
@@ -70,6 +66,7 @@ public class BopProvider extends ContentProvider {
 
 			//Case inserting trk_points for a specific activity
 			case ACTIVITY_ID_TRK_POINTS_CODE:
+				contentValues.put(BopProviderContract.TRK_POINT_ACTIVITY_ID, getMaxSessionId());
 				db.insert(BopProviderContract.TRK_POINT_TABLE, null, contentValues);
 				return null;
 			//Case for inserting all the activity info into the activity table
@@ -146,5 +143,22 @@ public class BopProvider extends ContentProvider {
 		}
 
 		return contentType;
+	}
+
+	public int getMaxSessionId(){
+		String query = "SELECT MAX(" + BopProviderContract.ACTIVITY_ID + ") AS max_id FROM " + BopProviderContract.ACTIVITY_TABLE;
+		Cursor cursor = dbHelper.getWritableDatabase().rawQuery(query, null);
+
+		int max_id = 0;
+		if (cursor.moveToFirst())
+		{
+			do
+			{
+				max_id = cursor.getInt(0);
+			} while(cursor.moveToNext());
+		}
+
+		cursor.close();
+		return max_id;
 	}
 }

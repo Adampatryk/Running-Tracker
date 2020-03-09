@@ -13,7 +13,7 @@ public class DBHelper extends SQLiteOpenHelper {
 	private SQLiteDatabase db;
 
 	public DBHelper(Context context) {
-		super(context, DATABASE_NAME, null, 1);
+		super(context, DATABASE_NAME, null, 2);
 		Log.d(TAG, "DBHelper: Constructor called");
 		getWritableDatabase();
 	}
@@ -28,7 +28,10 @@ public class DBHelper extends SQLiteOpenHelper {
 
 	@Override
 	public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
-		Log.d(TAG, "onUpgrade: Upgrading");
+		db = sqLiteDatabase;
+		db.execSQL("DROP TABLE activity");
+		db.execSQL("DROP TABLE trk_point");
+		createDBSchema();
 	}
 
 	//Function to create the Database schema
@@ -45,7 +48,8 @@ public class DBHelper extends SQLiteOpenHelper {
 				"avg_speed DOUBLE," +
 				"elevation INTEGER," +
 				"distance INTEGER," +
-				"calories_burned INTEGER);");
+				"calories_burned INTEGER," +
+				"image BLOB);");
 
 		Log.d(TAG, "createDBSchema: Created activity table");
 

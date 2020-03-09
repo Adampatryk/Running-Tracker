@@ -99,9 +99,7 @@ public class RecordFragment extends Fragment implements OnMapReadyCallback, Goog
 		task.addOnSuccessListener(new OnSuccessListener<LocationSettingsResponse>() {
 			@Override
 			public void onSuccess(LocationSettingsResponse locationSettingsResponse) {
-				// All location settings are satisfied. The client can initialize
-				// location requests here.
-				// ...
+				// All location settings are satisfied
 				startTrackingActivity();
 			}
 		});
@@ -132,8 +130,7 @@ public class RecordFragment extends Fragment implements OnMapReadyCallback, Goog
 				// Show the dialog by calling startResolutionForResult(),
 				// and check the result in onActivityResult().
 				ResolvableApiException resolvable = (ResolvableApiException) e;
-				resolvable.startResolutionForResult(getActivity(),
-						MainActivity.REQUEST_CHECK_SETTINGS);
+				resolvable.startResolutionForResult(getActivity(), MainActivity.REQUEST_CHECK_SETTINGS);
 			} catch (IntentSender.SendIntentException sendEx) {
 				// Ignore the error.
 			}
@@ -157,7 +154,7 @@ public class RecordFragment extends Fragment implements OnMapReadyCallback, Goog
 						if (location != null) {
 							LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
 							CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 16);
-							googleMap.animateCamera(cameraUpdate);
+							googleMap.moveCamera(cameraUpdate);
 						}
 					}
 				});

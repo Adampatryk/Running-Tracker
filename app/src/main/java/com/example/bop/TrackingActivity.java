@@ -1,21 +1,23 @@
 package com.example.bop;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.ServiceConnection;
-import android.os.AsyncTask;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
-import android.os.SystemClock;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import java.util.Locale;
 
 public class TrackingActivity extends AppCompatActivity {
 
@@ -24,13 +26,13 @@ public class TrackingActivity extends AppCompatActivity {
 	TextView timeTextView, distanceTextView, avgSpeedTextView, elevationTextView;
 	Handler updateTimeHandler = new Handler();
 	Handler updateStatsHandler = new Handler();
-	boolean stopped;
+	boolean stopped = false, isBound = false;
 
 	Runnable updateTimerThread = new Runnable() {
 		@Override
 		public void run() {
-
-			timeTextView.setText(locationServiceBinder.getTimeString());
+			String timeString = locationServiceBinder.getTimeString();
+			timeTextView.setText(timeString);
 
 			if (!stopped) updateTimeHandler.postDelayed(this, 0);
 		}
@@ -52,15 +54,31 @@ public class TrackingActivity extends AppCompatActivity {
 		}
 	};
 
+	//Following broadcast receiver is to listen to the location setting toggle state
+	private BroadcastReceiver locationSettingStateReceiver = new BroadcastReceiver() {
+		@Override
+		public void onReceive(Context context, Intent intent) {
+
+			if (intent.getAction().matches("android.location.PROVIDERS_CHANGED")) {
+				Toast.makeText(context, "YOU HAVE SWITCHED YOUR SETTING", Toast.LENGTH_SHORT).show();
+				if (!stopped) {
+					stopTracking();
+				}
+			}
+		}
+	};
+
 	private ServiceConnection serviceConnection = new ServiceConnection() {
 		@Override
 		public void onServiceConnected(ComponentName name, IBinder service) {
 			Log.d(TAG, "onServiceConnected: ");
+			isBound = true;
 			locationServiceBinder = (LocationService.LocationServiceBinder) service;
-			locationServiceBinder.startTracking();
-
-			//startTime = locationServiceBinder.getCurrentTimeMillis();
-
+//			if (locationServiceBinder.isPaused()) {
+//
+//			}
+			locationServiceBinder.resumeTracking();
+			registerReceiver(locationSettingStateReceiver, new IntentFilter(LocationManager.PROVIDERS_CHANGED_ACTION));
 			updateTimeHandler.postDelayed(updateTimerThread, 0);
 			updateStatsHandler.postDelayed(updateStatsThread, 0);
 		}
@@ -69,6 +87,8 @@ public class TrackingActivity extends AppCompatActivity {
 		public void onServiceDisconnected(ComponentName name) {
 			Log.d(TAG, "onServiceDisconnected: ");
 			locationServiceBinder = null;
+			isBound = false;
+			unregisterReceiver(locationSettingStateReceiver);
 		}
 	};
 
@@ -78,30 +98,36 @@ public class TrackingActivity extends AppCompatActivity {
 		setContentView(R.layout.activity_tracking);
 
 		Intent intent = new Intent(this, LocationService.class);
-		this.bindService(intent, serviceConnection, Context.BIND_ABOVE_CLIENT);
+		getApplicationContext().bindService(intent, serviceConnection, Context.BIND_ABOVE_CLIENT);
 
 		timeTextView = findViewById(R.id.text_view_time);
 		distanceTextView = findViewById(R.id.text_view_distance);
 		avgSpeedTextView = findViewById(R.id.text_view_speed);
 		elevationTextView = findViewById(R.id.text_view_elevation);
-
-		stopped = false;
 	}
 
 	public void onStopTrackingPressed(View v){
-		locationServiceBinder.stopTracking();
-		Intent intent = new Intent(this, EndTrackingActivity.class);
-		startActivity(intent);
-		//stopTracking();
-		stopped = true;
+		stopTracking();
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		stopped = false;
 	}
 
 	public void stopTracking(){
-		locationServiceBinder.stopTracking();
+		stopped = true;
+		if (isBound) {
+			locationServiceBinder.stopTracking();
+			getApplicationContext().unbindService(serviceConnection);
+			isBound = false;
+		}
 
 		Intent intent = new Intent(this, EndTrackingActivity.class);
 		startActivity(intent);
 	}
+
 
 	@Override
 	public void onBackPressed() {
@@ -110,6 +136,10 @@ public class TrackingActivity extends AppCompatActivity {
 
 	@Override
 	protected void onDestroy() {
+		if (isBound) {
+			getApplicationContext().unbindService(serviceConnection);
+			isBound = false;
+		}
 		super.onDestroy();
 	}
 }

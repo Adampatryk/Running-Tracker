@@ -1,5 +1,6 @@
 package com.example.bop;
 
+import android.graphics.Bitmap;
 import android.location.Location;
 import android.util.Log;
 
@@ -27,6 +28,7 @@ public class TrackedSession {
 	private Date timeStarted = null;
 	private Date timeStopped = null;
 	private ArrayList<Location> trkPoints = new ArrayList<>();
+	private Bitmap image;
 
 	private float totalSpeedForRunningAverage = 0;
 	private int totalTrkPointsWithSpeedForRunningAverage = 0;
@@ -125,6 +127,12 @@ public class TrackedSession {
 	}
 
 	//Getters and setters
+
+	boolean isPaused() {return this.paused;}
+
+	void setImage(Bitmap bitmap){this.image = bitmap;}
+
+	Bitmap getImage(){return this.image;}
 
 	void setTitle(String title){ this.title = title; }
 

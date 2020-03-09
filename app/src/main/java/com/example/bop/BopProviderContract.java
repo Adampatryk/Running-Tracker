@@ -21,6 +21,7 @@ public class BopProviderContract {
 	public static final String ACTIVITY_ELEVATION = "elevation";
 	public static final String ACTIVITY_DISTANCE = "distance";
 	public static final String ACTIVITY_CALORIES_BURNED = "calories_burned";
+	public static final String ACTIVITY_IMAGE = "image";
 
 	//trk_point table fields
 	public static final String TRK_POINT_ID = "_id";
