@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SessionDetailsActivity">
+
+    <include layout="@layout/toolbar"
+        android:id="@+id/toolbar"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/text_view_session_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:text="A very nice morning run"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:gravity="center"
+                android:textSize="25sp"
+                android:textColor="@color/colorPrimary"
+                android:padding="10sp"/>
+
+            <LinearLayout
+                android:id="@+id/important_stats"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/text_view_session_title"
+                app:layout_constraintStart_toStartOf="parent">
+
+                <TextView
+                    android:id="@+id/text_view_session_distance"
+                    android:layout_width="match_parent"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    tools:text="12.5km"
+                    android:textSize="30sp"
+                    android:textColor="@android:color/darker_gray"
+                    android:gravity="center"
+                    android:padding="10sp"/>
+                <TextView
+                    android:id="@+id/text_view_session_time"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    tools:text="14:45"
+                    android:textSize="30sp"
+                    android:textColor="@android:color/darker_gray"
+                    android:gravity="center"
+                    android:padding="10sp"/>
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/text_view_session_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:text="Felt really good today"
+                app:layout_constraintTop_toBottomOf="@id/important_stats"
+                android:textSize="15sp"
+                android:textColor="@color/colorPrimary"
+                android:padding="10sp"
+                android:layout_marginVertical="20sp"/>
+
+            <include layout="@layout/map"
+                app:layout_constraintTop_toBottomOf="@id/text_view_session_description"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_width="match_parent"
+                android:layout_height="300sp" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

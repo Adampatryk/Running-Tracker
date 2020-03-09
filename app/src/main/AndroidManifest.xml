@@ -3,7 +3,7 @@
     package="com.example.bop">
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
     <application
         android:name=".App"
@@ -13,10 +13,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".SessionDetailsActivity"
+            android:parentActivityName=".MainActivity" />
+
         <service
             android:name=".LocationService"
             android:enabled="true"
-            android:exported="true"></service>
+            android:exported="true" />
 
         <activity
             android:name=".SaveTrackedActivity"
@@ -33,13 +36,14 @@
         </activity>
 
         <provider
-            android:name="com.example.bop.BopProvider"
+            android:name=".BopProvider"
             android:authorities="com.example.bop"
             android:exported="true"
             android:multiprocess="true" />
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyCzXGYVQwQkmt1BAn0IDCOvM_MObkbsnEo"/>
+            android:value="AIzaSyCzXGYVQwQkmt1BAn0IDCOvM_MObkbsnEo" />
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />

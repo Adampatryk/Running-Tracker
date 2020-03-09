@@ -1,15 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
-    android:background="@color/colorPrimary">
+    android:padding="10sp">
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Home Page"
-        android:textColor="@android:color/white"
-        android:textSize="30sp"/>
+        android:text="SESSIONS"
+        android:textSize="40sp"
+        android:padding="20sp"
+        android:textColor="@color/colorPrimary"/>
 
+    <ListView
+        android:id="@+id/list_view_sessions"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:dividerHeight="15sp"
+        android:divider="@android:color/white"
+        />
 </LinearLayout>

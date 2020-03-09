@@ -91,15 +91,15 @@ public class BopProvider extends ContentProvider {
 			//Case for any specific activity being deleted, the ID is appended to the whereClause query string
 			case ACTIVITY_ID_CODE:
 				String id = uri.getLastPathSegment();
-				String activity_selection = selection + BopProviderContract.ACTIVITY_ID + "=" + id;
+				String activity_selection = BopProviderContract.ACTIVITY_ID + "=" + id;
 				String trk_points_selection = BopProviderContract.TRK_POINT_ACTIVITY_ID + "=" + id;
 
 				Log.d(TAG, "delete: Deleting activity with _id: " + id);
 				rowsAffected += db.delete(BopProviderContract.ACTIVITY_TABLE, activity_selection, selectionArgs);
 
 				Log.d(TAG, "delete: Deleting trk_points with activity_id: " + id);
-				rowsAffected += db.delete(BopProviderContract.TRK_POINT_TABLE, trk_points_selection, null);
-
+				//rowsAffected += db.delete(BopProviderContract.TRK_POINT_TABLE, trk_points_selection, null);
+				return rowsAffected;
 			//Catching the case that someone tries to delete an activity without providing an ID
 			case ACTIVITY_ALL_INFO_CODE:
 				Log.d(TAG, "delete: Must provide an ID of an activity to delete");

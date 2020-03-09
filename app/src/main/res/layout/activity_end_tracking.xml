@@ -20,6 +20,7 @@
         android:layout_height="wrap_content"
         android:text="TIME"
         android:textAlignment="center"
+        android:gravity="center"
         android:textSize="18sp"
         app:layout_constraintTop_toBottomOf="@id/map" />
 
@@ -29,6 +30,7 @@
         android:layout_height="wrap_content"
         android:text="00:00:00.0"
         android:textAlignment="center"
+        android:gravity="center"
         android:textSize="70sp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -44,6 +46,7 @@
         android:layout_marginTop="20sp"
         android:textSize="18sp"
         android:textAlignment="center"
+        android:gravity="center"
         />
 
     <TextView
@@ -55,7 +58,8 @@
         app:layout_constraintRight_toRightOf="parent"
         android:textSize="70sp"
         android:text="0.0"
-        android:textAlignment="center"/>
+        android:textAlignment="center"
+        android:gravity="center"/>
 
     <TextView
         android:id="@+id/text_view_speed_label"
@@ -77,7 +81,8 @@
         app:layout_constraintRight_toRightOf="parent"
         android:textSize="70sp"
         android:text="0.0"
-        android:textAlignment="center"/>
+        android:textAlignment="center"
+        android:gravity="center"/>
     <TextView
         android:id="@+id/text_view_elevation_label"
         android:layout_width="match_parent"
@@ -87,6 +92,7 @@
         android:layout_marginTop="20sp"
         android:textSize="18sp"
         android:textAlignment="center"
+        android:gravity="center"
         />
 
     <TextView
@@ -98,7 +104,8 @@
         app:layout_constraintRight_toRightOf="parent"
         android:textSize="70sp"
         android:text="0.0"
-        android:textAlignment="center"/>
+        android:textAlignment="center"
+        android:gravity="center"/>
 
     <Button
         android:id="@+id/button_choose_sport"

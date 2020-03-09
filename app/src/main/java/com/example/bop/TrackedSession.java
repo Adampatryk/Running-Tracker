@@ -28,8 +28,6 @@ public class TrackedSession {
 	private Date timeStopped = null;
 	private ArrayList<Location> trkPoints = new ArrayList<>();
 
-	long timeInMilliseconds = 0L, timeSwapBuff = 0L, updateTime = 0L;
-
 	private float totalSpeedForRunningAverage = 0;
 	private int totalTrkPointsWithSpeedForRunningAverage = 0;
 
@@ -137,8 +135,13 @@ public class TrackedSession {
 	String getDescription(){return description;}
 
 	String getTimeString(){
-		timeInMilliseconds = getCurrentTimeMillis();
-		updateTime = timeSwapBuff+timeInMilliseconds;
+		long timeInMilliseconds = getCurrentTimeMillis();
+		return timeToString(timeInMilliseconds);
+	}
+
+	static String timeToString(long timeInMilliseconds){
+		long timeSwapBuff = 0L;
+		long updateTime = timeSwapBuff + timeInMilliseconds;
 		int secs = (int) (updateTime / 1000);
 		int mins = secs / 60;
 		secs %= 60;
@@ -146,7 +149,18 @@ public class TrackedSession {
 		mins %= 60;
 		int milliseconds = (int) timeInMilliseconds%1000;
 		int centisecs = milliseconds/10;
-		return String.format(Locale.UK, "%01d:%02d:%02d.%02d", hrs, mins, secs, centisecs);
+
+		if (hrs == 0) {
+			if (mins == 0){
+				return String.format(Locale.UK, "%d.%02ds", secs, centisecs);
+			}
+			else {
+				return String.format(Locale.UK, "%d:%02d.%02ds", mins, secs, centisecs);
+			}
+		}
+
+		return String.format(Locale.UK, "%d:%02d:%02d.%02ds", hrs, mins, secs, centisecs);
+
 	}
 
 	public float getDistance(){
@@ -154,6 +168,10 @@ public class TrackedSession {
 	}
 
 	String getDistanceString(){
+		return distanceToString(distance);
+	}
+
+	static String distanceToString(float distance){
 		int metres = Math.round(distance);
 		int km = metres/1000;
 		metres = metres % 1000;
