@@ -3,5 +3,6 @@
     <color name="colorPrimary">#002B54</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
+    <color name="yellow">#FFFF00</color>
     <color name="toolbar_color_control_normal">#FFFFFF</color>
 </resources>

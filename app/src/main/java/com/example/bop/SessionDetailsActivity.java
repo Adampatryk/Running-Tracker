@@ -29,7 +29,7 @@ import java.util.ArrayList;
 public class SessionDetailsActivity extends AppCompatActivity implements OnMapReadyCallback {
 
 	int session_id;
-	TextView session_title, session_description, session_distance, session_time;
+	TextView session_title, session_description, session_distance, session_time, session_rating;
 	GoogleMap map;
 	ImageView imageView;
 
@@ -52,6 +52,7 @@ public class SessionDetailsActivity extends AppCompatActivity implements OnMapRe
 		session_distance = findViewById(R.id.text_view_session_distance);
 		session_time = findViewById(R.id.text_view_session_time);
 		imageView = findViewById(R.id.image_view_session_image);
+		session_rating = findViewById(R.id.text_view_session_rating);
 
 		querySession(session_id);
 
@@ -81,7 +82,7 @@ public class SessionDetailsActivity extends AppCompatActivity implements OnMapRe
 					recordData.add(cursor.getString(5)); // Activity type
 					recordData.add(cursor.getString(6)); // Duration
 					recordData.add(cursor.getString(7)); // Avg Speed
-					recordData.add(cursor.getString(8)); // Rating
+					recordData.add(cursor.getString(8)); //Elevation
 					recordData.add(cursor.getString(9)); // Distance
 					recordData.add(cursor.getString(10)); // Calories Burned
 					bitmap = ImageDBHelper.getImage(cursor.getBlob(11)); //Image
@@ -95,6 +96,7 @@ public class SessionDetailsActivity extends AppCompatActivity implements OnMapRe
 		String description = recordData.get(3);
 		String distance = TrackedSession.distanceToString(Float.parseFloat(recordData.get(9)), true);
 		String time = TrackedSession.timeToString(Long.parseLong(recordData.get(6)));
+		String rating = recordData.get(4);
 
 		//If an image exists in the database set the image
 		if (bitmap != null) {
@@ -105,6 +107,7 @@ public class SessionDetailsActivity extends AppCompatActivity implements OnMapRe
 		session_description.setText(description);
 		session_distance.setText(distance);
 		session_time.setText(time);
+		session_rating.setText(rating);
 	}
 
 	public void onDiscardTrackedActivity(View v){

@@ -29,6 +29,7 @@ public class TrackedSession {
 	private Date timeStopped = null;
 	private ArrayList<Location> trkPoints = new ArrayList<>();
 	private Bitmap image;
+	private int rating = 5;
 
 	private float totalSpeedForRunningAverage = 0;
 	private int totalTrkPointsWithSpeedForRunningAverage = 0;
@@ -127,6 +128,10 @@ public class TrackedSession {
 	}
 
 	//Getters and setters
+
+	int getRating() { return rating; }
+
+	void setRating(int rating) { this.rating = rating; }
 
 	boolean isPaused() {return this.paused;}
 

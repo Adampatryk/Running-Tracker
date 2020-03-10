@@ -40,6 +40,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Name your session"
+                android:textColor="@color/colorPrimary"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -64,6 +65,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/text_view_description_label"
                 android:text="Describe your session"
+                android:textColor="@color/colorPrimary"
                 android:textSize="20sp"
                 app:layout_constraintTop_toBottomOf="@id/edit_text_session_title"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -81,6 +83,30 @@
                 app:layout_constraintTop_toBottomOf="@+id/text_view_description_label"
                 />
 
+            <TextView
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/text_view_rating_label"
+                android:text="How do you feel?"
+                android:textColor="@color/colorPrimary"
+                android:textSize="20sp"
+                app:layout_constraintTop_toBottomOf="@+id/edit_text_session_description"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginTop="30sp"/>
+
+            <SeekBar
+                android:id="@+id/ratingSeekBar"
+                style="@style/Widget.AppCompat.SeekBar.Discrete"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="20sp"
+                android:max="10"
+                android:progress="5"
+                app:layout_constraintTop_toBottomOf="@+id/text_view_rating_label"
+                app:layout_constraintStart_toStartOf="parent" />
+
             <Button
                 android:id="@+id/button_add_photo"
                 android:layout_width="match_parent"
@@ -90,7 +116,7 @@
                 android:onClick="onAddImageClicked"
                 android:background="@color/colorPrimary"
                 android:textColor="@android:color/white"
-                app:layout_constraintTop_toBottomOf="@+id/edit_text_session_description"
+                app:layout_constraintTop_toBottomOf="@+id/ratingSeekBar"
                 app:layout_constraintStart_toStartOf="parent"/>
 
             <ImageView
@@ -105,5 +131,7 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

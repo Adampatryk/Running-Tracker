@@ -79,8 +79,19 @@
                 android:padding="10sp"
                 android:layout_marginVertical="20sp"/>
 
+            <TextView
+                android:id="@+id/text_view_session_rating"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:text="6"
+                app:layout_constraintTop_toBottomOf="@+id/text_view_session_description"
+                android:textSize="15sp"
+                android:textColor="@color/colorPrimary"
+                android:padding="10sp"
+                android:layout_marginVertical="20sp"/>
+
             <include layout="@layout/map"
-                app:layout_constraintTop_toBottomOf="@id/text_view_session_description"
+                app:layout_constraintTop_toBottomOf="@+id/text_view_session_rating"
                 app:layout_constraintStart_toStartOf="parent"
                 android:layout_width="match_parent"
                 android:layout_height="300sp" />

@@ -83,6 +83,10 @@ public class LocationService extends Service {
 
 		//Getters and setters
 
+		void setRating(int rating){ trackedSession.setRating(rating);}
+
+		int getRating() { return trackedSession.getRating();}
+
 		void setImage(Bitmap bitmap) { trackedSession.setImage(bitmap);}
 
 		Bitmap getImage() { return trackedSession.getImage(); }

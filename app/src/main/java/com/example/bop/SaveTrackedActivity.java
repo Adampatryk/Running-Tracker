@@ -15,6 +15,8 @@ import android.content.ServiceConnection;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
@@ -24,6 +26,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.SeekBar;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -34,14 +37,20 @@ public class SaveTrackedActivity extends AppCompatActivity {
 	LocationService.LocationServiceBinder locationServiceBinder = null;
 	EditText editTextTitle, editTextDescription;
 	private ImageView imageView;
+	private SeekBar ratingSeekBar;
 
 	private ServiceConnection serviceConnection = new ServiceConnection() {
 		@Override
 		public void onServiceConnected(ComponentName name, IBinder service) {
 			Log.d(TAG, "onServiceConnected: ");
 			locationServiceBinder = (LocationService.LocationServiceBinder) service;
+
+			//Set views to data from tracked session
 			editTextTitle.setText(locationServiceBinder.getTitle());
 			editTextDescription.setText(locationServiceBinder.getDescription());
+			ratingSeekBar.setProgress(locationServiceBinder.getRating());
+			imageView.setImageBitmap(locationServiceBinder.getImage());
+			setSeekBarColour(ratingSeekBar.getProgress());
 		}
 
 		@Override
@@ -99,8 +108,47 @@ public class SaveTrackedActivity extends AppCompatActivity {
 		editTextTitle = findViewById(R.id.edit_text_session_title);
 		editTextDescription = findViewById(R.id.edit_text_session_description);
 		imageView = findViewById(R.id.session_photo);
+		ratingSeekBar = findViewById(R.id.ratingSeekBar);
+
+		ratingSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+			@Override
+			public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+				setSeekBarColour(i);
+			}
+
+			@Override
+			public void onStartTrackingTouch(SeekBar seekBar) {
+
+			}
+
+			@Override
+			public void onStopTrackingTouch(SeekBar seekBar) {
+
+			}
+		});
+
+		//Set initial ratingSeekBar colour and progress
+		ratingSeekBar.getProgressDrawable().setColorFilter(Color.rgb(255, 255, 0), PorterDuff.Mode.MULTIPLY);
 	}
 
+	private void setSeekBarColour(int progress){
+		//Red 255, 0, 0
+		//Yellow 255, 255, 0
+		//Green 0, 255, 0
+		int red = 0, green = 0 , blue = 0;
+
+		if (progress <= 5) {
+			red = 255;
+			green = (int) (((float)progress / 5f) * 255f);
+		}
+		else {
+			green = 255;
+			red = 255 - (int)((((float)progress-5f) / 5f)*255f);
+		}
+
+		//Change colour of progress depending on value
+		ratingSeekBar.getProgressDrawable().setColorFilter(Color.rgb(red, green, blue), PorterDuff.Mode.MULTIPLY);
+	}
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -183,19 +231,20 @@ public class SaveTrackedActivity extends AppCompatActivity {
 
 		locationServiceBinder.setTitle(toTitleCase(editTextTitle.getText().toString()));
 		locationServiceBinder.setDescription(editTextDescription.getText().toString());
+		locationServiceBinder.setRating(ratingSeekBar.getProgress());
 
 		//Save the tracked session data
 		ContentValues sessionValues = new ContentValues();
 		sessionValues.put(BopProviderContract.ACTIVITY_TITLE, locationServiceBinder.getTitle());
 		sessionValues.put(BopProviderContract.ACTIVITY_DESCRIPTION, locationServiceBinder.getDescription());
-		sessionValues.put(BopProviderContract.ACTIVITY_ACTIVITY_TYPE, "Run");
+		sessionValues.put(BopProviderContract.ACTIVITY_ACTIVITY_TYPE, "Run"); // Ready to implement different activity types
 		sessionValues.put(BopProviderContract.ACTIVITY_DATETIME, locationServiceBinder.getTimeCreated().getTime());
 		sessionValues.put(BopProviderContract.ACTIVITY_DISTANCE, locationServiceBinder.getDistance());
 		sessionValues.put(BopProviderContract.ACTIVITY_DURATION, locationServiceBinder.getDuration());
 		sessionValues.put(BopProviderContract.ACTIVITY_AVG_SPEED, locationServiceBinder.getAvgSpeed());
 		sessionValues.put(BopProviderContract.ACTIVITY_ELEVATION, locationServiceBinder.getElevation());
-		sessionValues.put(BopProviderContract.ACTIVITY_RATING, 8);
-		sessionValues.put(BopProviderContract.ACTIVITY_CALORIES_BURNED, 435);
+		sessionValues.put(BopProviderContract.ACTIVITY_RATING, locationServiceBinder.getRating());
+		sessionValues.put(BopProviderContract.ACTIVITY_CALORIES_BURNED, 435); //Ready for implementing BMI calculations
 		sessionValues.put(BopProviderContract.ACTIVITY_IMAGE, ImageDBHelper.getBytes(locationServiceBinder.getImage()));
 
 		getContentResolver().insert(BopProviderContract.ACTIVITY_URI, sessionValues);
@@ -238,17 +287,21 @@ public class SaveTrackedActivity extends AppCompatActivity {
 
 	@Override
 	public void onBackPressed() {
-		locationServiceBinder.setTitle(editTextTitle.getText().toString());
-		locationServiceBinder.setDescription(editTextDescription.getText().toString());
+		saveDataToServiceBinder();
 		super.onBackPressed();
 	}
 
 
 	@Override
 	public boolean onSupportNavigateUp() {
-		locationServiceBinder.setTitle(editTextTitle.getText().toString());
-		locationServiceBinder.setDescription(editTextDescription.getText().toString());
+		saveDataToServiceBinder();
 		return super.onSupportNavigateUp();
+	}
+
+	public void saveDataToServiceBinder(){
+		locationServiceBinder.setTitle(toTitleCase(editTextTitle.getText().toString()));
+		locationServiceBinder.setDescription(editTextDescription.getText().toString());
+		locationServiceBinder.setRating(ratingSeekBar.getProgress());
 	}
 
 	protected void backToMainActivity(){

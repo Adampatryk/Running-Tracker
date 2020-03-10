@@ -2,9 +2,7 @@ package com.example.bop;
 
 import android.content.Intent;
 import android.database.Cursor;
-import android.nfc.Tag;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,9 +49,6 @@ public class HomeFragment extends Fragment {
 		//If there are no tracked sessions display the "No tracked sessions yet" message
 		if (c.getCount() == 0) {
 			getView().findViewById(R.id.text_view_no_sessions).setVisibility(View.VISIBLE);
-		}
-		else {
-			getView().findViewById(R.id.text_view_no_sessions).setVisibility(View.GONE);
 		}
 
 		SessionCursorAdapter sessionCursorAdapter = new SessionCursorAdapter(getContext(), c);
