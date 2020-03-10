@@ -45,18 +45,16 @@ public class HomeFragment extends Fragment {
 				BopProviderContract.ACTIVITY_ID
 		};
 
-		int[] to = new int[]{
-				R.id.text_view_row_title,
-				R.id.text_view_row_distance,
-				R.id.text_view_row_date,
-				R.id.text_view_row_time,
-				R.id.text_view_row_id
-		};
+		c = getContext().getContentResolver().query(BopProviderContract.ACTIVITY_URI, columns,
+				null, null, BopProviderContract.ACTIVITY_DATETIME + " DESC");
 
-		c = getContext().getContentResolver().query(BopProviderContract.ACTIVITY_URI, columns, null, null, BopProviderContract.ACTIVITY_DATETIME + " DESC");
-
-//		simpleCursorAdapter = new SimpleCursorAdapter(getContext(), R.layout.row_session, c, columns, to, 0);
-//		sessionsListView.setAdapter(simpleCursorAdapter);
+		//If there are no tracked sessions display the "No tracked sessions yet" message
+		if (c.getCount() == 0) {
+			getView().findViewById(R.id.text_view_no_sessions).setVisibility(View.VISIBLE);
+		}
+		else {
+			getView().findViewById(R.id.text_view_no_sessions).setVisibility(View.GONE);
+		}
 
 		SessionCursorAdapter sessionCursorAdapter = new SessionCursorAdapter(getContext(), c);
 		sessionsListView.setAdapter(sessionCursorAdapter);

@@ -137,11 +137,51 @@ public class SaveTrackedActivity extends AppCompatActivity {
 		}
 	}
 
+	public String toTitleCase(String str) {
+
+		if (str == null) {
+			return null;
+		}
+
+		boolean space = true;
+		StringBuilder builder = new StringBuilder(str);
+		final int len = builder.length();
+
+		for (int i = 0; i < len; ++i) {
+			char c = builder.charAt(i);
+			if (space) {
+				if (!Character.isWhitespace(c)) {
+					// Convert to title case and switch out of whitespace mode.
+					builder.setCharAt(i, Character.toTitleCase(c));
+					space = false;
+				}
+			} else if (Character.isWhitespace(c)) {
+				space = true;
+			} else {
+				builder.setCharAt(i, Character.toLowerCase(c));
+			}
+		}
+
+		return builder.toString();
+	}
+
 	public void onSaveTrackedActivity(View v){
 
-		Log.d(TAG, "onSaveTrackedActivity: Stopped LocationService");
+		//Check if the user has set a title
+		if (editTextTitle.getText().toString().trim().equals("")) {
 
-		locationServiceBinder.setTitle(editTextTitle.getText().toString());
+			//Alert the user to add a title
+			AlertDialog.Builder builder = new AlertDialog.Builder(this);
+			builder.setMessage("You can't leave the title of your run empty!")
+					.setTitle("Empty title")
+					.setPositiveButton("OK", null);
+			AlertDialog dialog = builder.create();
+			dialog.show();
+
+			return;
+		}
+
+		locationServiceBinder.setTitle(toTitleCase(editTextTitle.getText().toString()));
 		locationServiceBinder.setDescription(editTextDescription.getText().toString());
 
 		//Save the tracked session data
