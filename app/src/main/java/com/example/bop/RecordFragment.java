@@ -24,16 +24,16 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+//This is the fragment that ensures that users have their location on and have granted location permission
+//and let the user continue on to track a session
 public class RecordFragment extends Fragment implements OnMapReadyCallback, GoogleMap.OnMyLocationButtonClickListener, GoogleMap.OnMyLocationClickListener {
 	private static final String TAG = "RecordFragment";
 
@@ -59,14 +59,13 @@ public class RecordFragment extends Fragment implements OnMapReadyCallback, Goog
 		button_start_tracking.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
-				if (getContext() != null){
+				if (getContext() != null) {
 
 					//Attempt by checking if location setting is turned on
 					attemptStartTrackingService();
 
 					Log.d(TAG, "onClick: Started LocationService");
-				} 
-				else{
+				} else {
 					Log.d(TAG, "onClick: Cannot start service, getContext() returned null");
 				}
 			}
@@ -79,12 +78,14 @@ public class RecordFragment extends Fragment implements OnMapReadyCallback, Goog
 
 		mapView = v.findViewById(R.id.map);
 		mapView.onCreate(mapViewBundle);
-		mapView.getMapAsync(this); //CAUSES CRASH WHEN LOCATION PERMISSION NOT ON
+		mapView.getMapAsync(this);
 
 		return v;
 	}
 
-	private void attemptStartTrackingService(){
+	//Try to start tracking service but only if location setting is on, otherwise ask the user to turn
+	//location on
+	private void attemptStartTrackingService() {
 		LocationRequest locationRequest = LocationRequest.create();
 		locationRequest.setInterval(10000);
 		locationRequest.setFastestInterval(5000);
@@ -112,8 +113,8 @@ public class RecordFragment extends Fragment implements OnMapReadyCallback, Goog
 		});
 	}
 
-	public void startTrackingActivity(){
-		Toast.makeText(getContext(), "Starting Service", Toast.LENGTH_SHORT).show();
+	//Go to the tracking activity and fire up the location service to start tracking the session
+	public void startTrackingActivity() {
 		Intent activityIntent = new Intent(getContext(), TrackingActivity.class);
 		startActivity(activityIntent);
 
@@ -122,7 +123,8 @@ public class RecordFragment extends Fragment implements OnMapReadyCallback, Goog
 
 	}
 
-	private void promptToChangeLocationSettings(Exception e){
+	//Ask the user to turn on their location settings
+	private void promptToChangeLocationSettings(Exception e) {
 		if (e instanceof ResolvableApiException) {
 			// Location settings are not satisfied, but this can be fixed
 			// by showing the user a dialog.
@@ -137,6 +139,7 @@ public class RecordFragment extends Fragment implements OnMapReadyCallback, Goog
 		}
 	}
 
+	//When the map is ready, enable location updates to show where the user currently is
 	@Override
 	public void onMapReady(final GoogleMap googleMap) {
 		this.googleMap = googleMap;
@@ -163,11 +166,6 @@ public class RecordFragment extends Fragment implements OnMapReadyCallback, Goog
 	@Override
 	public boolean onMyLocationButtonClick() {
 		return false;
-	}
-
-	@Override
-	public void onMyLocationClick(@NonNull Location location) {
-		Toast.makeText(getActivity(), "Your Location: " + location.toString(), Toast.LENGTH_SHORT).show();
 	}
 
 	@Override
@@ -217,5 +215,10 @@ public class RecordFragment extends Fragment implements OnMapReadyCallback, Goog
 	public void onLowMemory() {
 		super.onLowMemory();
 		mapView.onLowMemory();
+	}
+
+	@Override
+	public void onMyLocationClick(@NonNull Location location) {
+		return;
 	}
 }

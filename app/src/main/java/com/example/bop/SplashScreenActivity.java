@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
+//This is the activity that is displayed first to give the user a welcome screen with the logo and title
 public class SplashScreenActivity extends AppCompatActivity {
 
 	private static final String TAG = "SplashScreenActivity";
@@ -15,7 +16,6 @@ public class SplashScreenActivity extends AppCompatActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
 
 		//Create the configuration for the splashcreen, icons, text, timeout...
 		EasySplashScreen config = new EasySplashScreen(SplashScreenActivity.this)

@@ -18,7 +18,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
+//This is the activity that is the user sees when the session is being tracked
 public class TrackingActivity extends AppCompatActivity {
 
 	private static final String TAG = "TrackingActivity";
@@ -28,6 +28,7 @@ public class TrackingActivity extends AppCompatActivity {
 	Handler updateStatsHandler = new Handler();
 	boolean stopped = false, isBound = false;
 
+	//This thread updates the timer as often as it can to give smooth counting effect
 	Runnable updateTimerThread = new Runnable() {
 		@Override
 		public void run() {
@@ -38,6 +39,7 @@ public class TrackingActivity extends AppCompatActivity {
 		}
 	};
 
+	//This thread checks and updates the distance and average speed every second
 	Runnable updateStatsThread = new Runnable() {
 		@Override
 		public void run() {
@@ -55,27 +57,28 @@ public class TrackingActivity extends AppCompatActivity {
 	private BroadcastReceiver locationSettingStateReceiver = new BroadcastReceiver() {
 		@Override
 		public void onReceive(Context context, Intent intent) {
-
 			if (intent.getAction().matches("android.location.PROVIDERS_CHANGED")) {
-				Toast.makeText(context, "YOU HAVE SWITCHED YOUR SETTING", Toast.LENGTH_SHORT).show();
 				if (!stopped) {
 					stopTracking();
+					Toast.makeText(context, "Location must be on to track session", Toast.LENGTH_SHORT).show();
 				}
 			}
 		}
 	};
 
+	//Holds the connection to the service
 	private ServiceConnection serviceConnection = new ServiceConnection() {
 		@Override
 		public void onServiceConnected(ComponentName name, IBinder service) {
 			Log.d(TAG, "onServiceConnected: ");
 			isBound = true;
 			locationServiceBinder = (LocationService.LocationServiceBinder) service;
-//			if (locationServiceBinder.isPaused()) {
-//
-//			}
 			locationServiceBinder.resumeTracking();
+
+			//When the service is connected, make sure the receiver is listening for location setting changes
 			registerReceiver(locationSettingStateReceiver, new IntentFilter(LocationManager.PROVIDERS_CHANGED_ACTION));
+
+			//Start the update threads
 			updateTimeHandler.postDelayed(updateTimerThread, 0);
 			updateStatsHandler.postDelayed(updateStatsThread, 0);
 		}
@@ -85,6 +88,7 @@ public class TrackingActivity extends AppCompatActivity {
 			Log.d(TAG, "onServiceDisconnected: ");
 			locationServiceBinder = null;
 			isBound = false;
+			//Broadcast receiver not needed when location service is not getting location updates
 			unregisterReceiver(locationSettingStateReceiver);
 		}
 	};
@@ -94,26 +98,31 @@ public class TrackingActivity extends AppCompatActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_tracking);
 
+		//Start the location tracking service
 		Intent intent = new Intent(this, LocationService.class);
 		getApplicationContext().bindService(intent, serviceConnection, Context.BIND_ABOVE_CLIENT);
 
+		//Find text views
 		timeTextView = findViewById(R.id.text_view_time);
 		distanceTextView = findViewById(R.id.text_view_distance);
 		avgSpeedTextView = findViewById(R.id.text_view_speed);
 		elevationTextView = findViewById(R.id.text_view_elevation);
 	}
 
-	public void onStopTrackingPressed(View v){
+	//When the user clicks the stop button
+	public void onStopTrackingPressed(View v) {
 		stopTracking();
 	}
 
+	//To resume the tracking
 	@Override
 	protected void onResume() {
 		super.onResume();
 		stopped = false;
 	}
 
-	public void stopTracking(){
+	//To stop the tracking safely must unbind to prevent leaks
+	public void stopTracking() {
 		stopped = true;
 		if (isBound) {
 			locationServiceBinder.stopTracking();
@@ -125,12 +134,13 @@ public class TrackingActivity extends AppCompatActivity {
 		startActivity(intent);
 	}
 
-
+	//When back button is pressed, interpret that as a pause
 	@Override
 	public void onBackPressed() {
 		stopTracking();
 	}
 
+	//Unbind also on destroy to prevent leaks
 	@Override
 	protected void onDestroy() {
 		if (isBound) {

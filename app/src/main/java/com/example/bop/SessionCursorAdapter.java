@@ -12,20 +12,20 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+//This class is the definition for how data should be taken out of cursor and into a row of data for
+//a session in the listview
 public class SessionCursorAdapter extends CursorAdapter {
 	public SessionCursorAdapter(Context context, Cursor cursor) {
 		super(context, cursor, 0);
 	}
 
-	// The newView method is used to inflate a new view and return it,
-	// you don't bind any data to the view at this point.
+	// Inflates the view
 	@Override
 	public View newView(Context context, Cursor cursor, ViewGroup parent) {
 		return LayoutInflater.from(context).inflate(R.layout.row_session, parent, false);
 	}
 
-	// The bindView method is used to bind all data to a given view
-	// such as setting the text on a TextView.
+	// The bindView method is used to bind all data from the cursor to the views of the row
 	@Override
 	public void bindView(View view, Context context, Cursor cursor) {
 		// Find fields to populate in inflated template
@@ -34,7 +34,6 @@ public class SessionCursorAdapter extends CursorAdapter {
 		TextView datetimeTextView = view.findViewById(R.id.text_view_row_date);
 		TextView durationTextView = view.findViewById(R.id.text_view_row_time);
 		TextView idTextView = view.findViewById(R.id.text_view_row_id);
-
 
 		// Extract properties from cursor
 		String title = cursor.getString(cursor.getColumnIndexOrThrow(BopProviderContract.ACTIVITY_TITLE));

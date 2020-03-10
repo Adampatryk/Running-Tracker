@@ -15,8 +15,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+//This is the fragment that deals with displaying stats for the user for different time periods
 public class ProfileFragment extends Fragment {
 
+	//Text views for the profile page
 	private TextView text_view_sessions_count,
 			text_view_total_distance,
 			text_view_total_time,
@@ -25,48 +27,65 @@ public class ProfileFragment extends Fragment {
 			text_view_avg_distance,
 			text_view_avg_time;
 
+	//Buttons to change between time period to look for
 	private Button button_week, button_month, button_all_time;
+	//Currently active button
 	private Button activeButton;
 
-	private String dateSelection = null;
+	//SQL WHERE clauses that will alter the date ranges in which queries are asking for data from
 	private String thisWeekString, thisMonthString, allTimeString;
+	//The currently active WHERE clause
+	private String dateSelection = null;
 
-	public void onWeekButtonPressed(View v){
-		dateSelection =  thisWeekString;
+	//The following button pressed methods visually select and unselect the correct buttons and
+	//change the SQL date selection for the queries
+
+	//Week button pressed method
+	public void onWeekButtonPressed(View v) {
+		dateSelection = thisWeekString;
 		selectButton(button_week);
 	}
 
-	public void onMonthButtonPressed(View v){
+	//Month button pressed method
+	public void onMonthButtonPressed(View v) {
 		dateSelection = thisMonthString;
 		selectButton(button_month);
 	}
 
-	public void onAllTimeButtonPressed(View v){
+	//All time button pressed method
+	public void onAllTimeButtonPressed(View v) {
 		dateSelection = allTimeString;
 		selectButton(button_all_time);
 	}
 
-	private void createDateSelectionStrings(){
-
+	//Create the SQL clauses that capture the correct date ranges
+	private void createDateSelectionStrings() {
+		//For all time, the SQL where clause is left blank, this gets all the data
 		allTimeString = null;
 
-		// get today and clear time of day
+		// Get today using calendar and clear time of day
 		Calendar cal = Calendar.getInstance();
-		cal.set(Calendar.HOUR_OF_DAY, 0); // ! clear would not reset the hour of day !
+		cal.set(Calendar.HOUR_OF_DAY, 0);
 		cal.clear(Calendar.MINUTE);
 		cal.clear(Calendar.SECOND);
 		cal.clear(Calendar.MILLISECOND);
 
+		//Set the day to the first day of the week
 		cal.set(Calendar.DAY_OF_WEEK, cal.getFirstDayOfWeek());
+		//Get the millisecond conversion of the first day of the week and assign the SQL statement to say
+		//to get everything above that value
 		thisWeekString = BopProviderContract.ACTIVITY_DATETIME + " > " + cal.getTimeInMillis();
 
-		// get start of the month
+		//Set the day to the first of the month
 		cal.set(Calendar.DAY_OF_MONTH, 1);
+		//Get the millisecond conversion of the first day of the month and assign the SQL statement to say
+		//to get everything above that value
 		thisMonthString = BopProviderContract.ACTIVITY_DATETIME + " > " + cal.getTimeInMillis();
-
 	}
 
-	private void selectButton(Button selectedButton){
+	//Visually changes the buttons, changing the backgrounds and text colours, then updates the
+	//stat views to refresh
+	private void selectButton(Button selectedButton) {
 		button_week.setBackgroundColor(Color.WHITE);
 		button_week.setTextColor(getResources().getColor(R.color.colorPrimary));
 
@@ -80,6 +99,7 @@ public class ProfileFragment extends Fragment {
 		activeButton.setBackgroundColor(getResources().getColor(R.color.colorAccent));
 		activeButton.setTextColor(Color.WHITE);
 
+		//Refresh the stat views
 		setViewStats();
 	}
 
@@ -126,13 +146,14 @@ public class ProfileFragment extends Fragment {
 
 		createDateSelectionStrings();
 
-		//Simulate the week button being pressed
+		//Simulate the week button being pressed on opening of this page
 		onWeekButtonPressed(button_week);
 
 		return v;
 	}
 
-	public void setViewStats(){
+	//Query the statistical data and assign them to the correct views
+	public void setViewStats() {
 		//Prepare strings
 		String sessions_count,
 				total_distance,
@@ -152,15 +173,14 @@ public class ProfileFragment extends Fragment {
 		sessions_count = c.getString(c.getColumnIndexOrThrow(BopProviderContract.SESSIONS_COUNT));
 
 		//If no sessions came through, stop querying
-		if (sessions_count.equals("0")){
+		if (sessions_count.equals("0")) {
 			total_distance = "0m";
 			total_time = "0s";
 			longest_distance = "0m";
 			longest_time = "0s";
 			average_distance = "0m";
 			average_time = "0s";
-		}
-		else {
+		} else {
 			//Query to get the total distance across all sessions
 			c = getContext().getContentResolver().query(BopProviderContract.TOTAL_DISTANCE_URI,
 					null, dateSelection, null, null);

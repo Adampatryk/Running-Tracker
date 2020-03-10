@@ -22,18 +22,20 @@ import com.google.android.gms.common.api.ResolvableApiException;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 
+//The activity that holds the 3 main fragments of the application and deals with the logic of safely
+//switching between them
 public class MainActivity extends AppCompatActivity {
 
 	private static final String TAG = "MainActivity";
 	private int ACCESS_FINE_LOCATION = 1;
 	BottomNavigationView bottomNavigationView;
 
+	//Values to determine which fragment to display
 	private static final int HOME_FRAGMENT = 0;
 	private static final int RECORD_FRAGMENT = 1;
 	private static final int PROFILE_FRAGMENT = 2;
 	private int currentFragment = 0;
 	Fragment selectedFragment;
-
 	
 	public static final int REQUEST_CHECK_SETTINGS = 1;
 	
@@ -50,29 +52,7 @@ public class MainActivity extends AppCompatActivity {
 		//Initially display HomeFragment
 		selectedFragment = new HomeFragment();
 		getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, selectedFragment).commit();
-		Cursor cursor = getContentResolver().query(BopProviderContract.ACTIVITY_URI, null, "", null, "");
-
-		if (cursor.moveToFirst())
-		{
-			do
-			{
-				Log.d(TAG, "onCreate: Showing session: " + cursor.getString(0));
-				Log.d(TAG, "Title: " + cursor.getString(1));
-				Log.d(TAG, "Datetime: " + cursor.getString(2));
-				Log.d(TAG, "Description: " + cursor.getString(3));
-				Log.d(TAG, "4: " + cursor.getString(4));
-				Log.d(TAG, "Activity Type: " + cursor.getString(5));
-				Log.d(TAG, "6: " + cursor.getString(6));
-				Log.d(TAG, "7: " + cursor.getString(7));
-				Log.d(TAG, "8: " + cursor.getString(8));
-				Log.d(TAG, "9: " + cursor.getString(9));
-				Log.d(TAG, "Calories Burned: " + cursor.getString(10));
-			} while(cursor.moveToNext());
-		}
-
-		cursor.close();
 	}
-
 
 	//Nav listener to listen to navigation bar item selections
 	private BottomNavigationView.OnNavigationItemSelectedListener navListener =
@@ -80,9 +60,10 @@ public class MainActivity extends AppCompatActivity {
 				@Override
 				public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
 
-					//Figure out which fragment to display based on the id of the menuItem
+					//Figure out which fragment to display based on the id of the menuItem clicked
 					switch(menuItem.getItemId()){
 						case (R.id.nav_home):
+							//Set the current fragment to be a new Home Fragment
 							selectedFragment = new HomeFragment();
 							currentFragment = HOME_FRAGMENT;
 							break;
@@ -93,6 +74,7 @@ public class MainActivity extends AppCompatActivity {
 							}
 							break;
 						case (R.id.nav_profile):
+							//Set the current fragment to be a new Profile Fragment
 							selectedFragment = new ProfileFragment();
 							currentFragment = PROFILE_FRAGMENT;
 							break;
@@ -108,6 +90,7 @@ public class MainActivity extends AppCompatActivity {
 				}
 			};
 
+	//Checks if the user has granted location permissions and if not asks for them
 	private boolean checkLocationPermission(){
 		if (ContextCompat.checkSelfPermission(MainActivity.this,
 				Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -120,9 +103,11 @@ public class MainActivity extends AppCompatActivity {
 		return true;
 	}
 
+	//On the result of asking for location permission
 	@Override
 	public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
 		if (requestCode == ACCESS_FINE_LOCATION)  {
+			//If the permission was not granted switch the fragment back to what was there previously
 			if (!(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
 				switch(currentFragment){
 					case HOME_FRAGMENT:
@@ -145,13 +130,16 @@ public class MainActivity extends AppCompatActivity {
 		}
 	}
 
+	//Where the user comes back to after being asked to turn on location setting
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		if (requestCode == REQUEST_CHECK_SETTINGS){
+			//If the user turned on their setting, start tracking the activity
 			if (resultCode == RESULT_OK){
 				((RecordFragment)selectedFragment).startTrackingActivity();
 			} else {
+				//If the user didn't turn their setting on, the activity cannot be started to track
 				Toast.makeText(this, "Location must be turned on to track a session", Toast.LENGTH_SHORT).show();
 			}
 		}

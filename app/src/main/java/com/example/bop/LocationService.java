@@ -3,13 +3,9 @@ package com.example.bop;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.Service;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.location.Location;
-import android.location.LocationManager;
 import android.os.Binder;
 import android.os.IBinder;
 import android.os.Looper;
@@ -23,20 +19,24 @@ import com.google.android.gms.location.LocationResult;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Locale;
 
 import androidx.core.app.NotificationCompat;
 
 import static com.example.bop.App.CHANNEL_ID;
 
+//This service deals with the tracking of a session, activities bind to this to control what happens
+//such as pausing and unpausing. This is done with the additional helper class of a TrackedSession
+//which abstracts all the details about a session into a class which this class manipulates and controls
 public class LocationService extends Service {
 	private static final String TAG = "LocationService";
 
+	//Allows activities to control the service
 	private final IBinder binder = new LocationServiceBinder();
 
 	private FusedLocationProviderClient fusedLocationProviderClient;
 	private LocationRequest locationRequest;
 	private LocationCallback locationCallback;
+	//Holds all the details about the tracked session
 	private TrackedSession trackedSession = new TrackedSession();
 
 
@@ -56,73 +56,130 @@ public class LocationService extends Service {
 		return super.onStartCommand(intent, flags, startId);
 	}
 
+	//Defines the communication functions
 	public class LocationServiceBinder extends Binder {
 
-		boolean isPaused() { return trackedSession.isPaused();}
+		//Check if the session is currently paused
+		boolean isPaused() {
+			return trackedSession.isPaused();
+		}
 
-		void resumeTracking(){
+		//Continue / or start tracking
+		void resumeTracking() {
 			resumeLocationTracking();
 		}
 
-		void stopTracking(){
+		//Pause
+		void stopTracking() {
 			stopLocationTracking();
-		}
-
-		ArrayList<Location> getTrkPoints(){
-			return trackedSession.getTrkPoints();
-		}
-
-		TrackedSession getTrackedActivity(){
-			return trackedSession;
-		}
-
-		void endTracking(){
-
-			Log.d(TAG, "endTracking: Tracked Activity toString(): \n" + trackedSession.toString());
 		}
 
 		//Getters and setters
 
-		void setRating(int rating){ trackedSession.setRating(rating);}
+		//Get the tracked session
+		TrackedSession getTrackedActivity() {
+			return trackedSession;
+		}
 
-		int getRating() { return trackedSession.getRating();}
+		//Get all the track points
+		ArrayList<Location> getTrkPoints() {
+			return trackedSession.getTrkPoints();
+		}
 
-		void setImage(Bitmap bitmap) { trackedSession.setImage(bitmap);}
+		//Set the tracked session rating for persistence
+		void setRating(int rating) {
+			trackedSession.setRating(rating);
+		}
 
-		Bitmap getImage() { return trackedSession.getImage(); }
+		//Get the tracked session rating
+		int getRating() {
+			return trackedSession.getRating();
+		}
 
-		void setTitle(String title) { trackedSession.setTitle(title); }
+		//Set the bitmap image to the tracked session for persistence
+		void setImage(Bitmap bitmap) {
+			trackedSession.setImage(bitmap);
+		}
 
-		String getTitle(){return trackedSession.getTitle();}
+		//Get the bitmap image of the tracked session
+		Bitmap getImage() {
+			return trackedSession.getImage();
+		}
 
-		void setDescription(String description){ trackedSession.setDescription(description);}
+		//Set the title of the tracked session for persistence
+		void setTitle(String title) {
+			trackedSession.setTitle(title);
+		}
 
-		String getDescription(){return trackedSession.getDescription();}
+		//Get the title of the tracked session
+		String getTitle() {
+			return trackedSession.getTitle();
+		}
 
-		Date getTimeCreated(){return trackedSession.getTimeCreated();}
+		//Set description for the tracked session for persistence
+		void setDescription(String description) {
+			trackedSession.setDescription(description);
+		}
 
-		long getDuration(){return trackedSession.getCurrentTimeMillis();}
+		//Get the description of the tracked session
+		String getDescription() {
+			return trackedSession.getDescription();
+		}
 
-		String getTimeString() {return trackedSession.getTimeString();}
+		//Get the millisecond time that this was created
+		Date getTimeCreated() {
+			return trackedSession.getTimeCreated();
+		}
 
-		float getDistance() {return trackedSession.getDistance();}
+		//Get the duration of the tracked session
+		long getDuration() {
+			return trackedSession.getCurrentTimeMillis();
+		}
 
-		String getDistanceString() {return trackedSession.getDistanceString();}
+		//Get the duration as a string ready for printing
+		String getTimeString() {
+			return trackedSession.getTimeString();
+		}
 
-		float getAvgSpeed() {return trackedSession.getAvgSpeed();}
+		//Get the distance of the tracked session
+		float getDistance() {
+			return trackedSession.getDistance();
+		}
 
-		String getAvgSpeedString(){return trackedSession.getAvgSpeedString();}
+		//Get the distance as a string ready for printing
+		String getDistanceString() {
+			return trackedSession.getDistanceString();
+		}
 
-		float getElevation() {return trackedSession.getElevation();}
+		//Get the average speed of the tracked session
+		float getAvgSpeed() {
+			return trackedSession.getAvgSpeed();
+		}
 
-		String getElevationString(){return trackedSession.getElevationString(); }
+		//Get the average speed as a string
+		String getAvgSpeedString() {
+			return trackedSession.getAvgSpeedString();
+		}
+
+		//Get the elevation
+		float getElevation() {
+			return trackedSession.getElevation();
+		}
+
+		//Get the elevation as a string ready for priting
+		String getElevationString() {
+			return trackedSession.getElevationString();
+		}
 	}
 
-	private void startLocationTracking(){
+	//Start the location requests
+	private void startLocationTracking() {
+		//If a tracked session already exists just resume it
 		if (trackedSession.isCreated()) {
 			resumeLocationTracking();
 			Log.d(TAG, "startLocationTracking: Tracked Activity has already been started, resuming...");
 		} else {
+			//Set up location requests
 			fusedLocationProviderClient = new FusedLocationProviderClient(this);
 
 			locationRequest = LocationRequest.create();
@@ -130,7 +187,7 @@ public class LocationService extends Service {
 			locationRequest.setFastestInterval(5000);
 			locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
 
-			locationCallback = new LocationCallback(){
+			locationCallback = new LocationCallback() {
 				@Override
 				public void onLocationResult(LocationResult locationResult) {
 					if (locationResult == null) {
@@ -143,38 +200,41 @@ public class LocationService extends Service {
 				}
 			};
 
+			//Set the tracked session to start
 			trackedSession.startTrackingActivity();
 			fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallback, Looper.getMainLooper());
 
 			Log.d(TAG, "startLocationTracking: requested location updates");
 		}
-		
+
 	}
 
-	private void resumeLocationTracking(){
+	private void resumeLocationTracking() {
 		if (trackedSession.isCreated()) {
 			//If the tracked session is paused, unpause it, otherwise do nothing
-			if (trackedSession.isPaused()){
+			if (trackedSession.isPaused()) {
 				trackedSession.resumeTrackingActivity();
 				fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallback, Looper.getMainLooper());
 			}
 			Log.d(TAG, "resumeLocationTracking: resume requested location updates");
-		} else {
+		}
+		//If a tracked session didn't already exist with location tracking, a new one is started
+		else {
 			startLocationTracking();
 			Log.d(TAG, "resumeLocationTracking: No Tracked Activity started, starting a new one...");
 		}
-
-
 	}
 
-	private void stopLocationTracking(){
+	//Pauses the tracking and removes the location updates
+	private void stopLocationTracking() {
 		trackedSession.stopTrackingActivity();
 		fusedLocationProviderClient.removeLocationUpdates(locationCallback);
 
 		Log.d(TAG, "stopLocationTracking: removed location updates");
 	}
 
-	private Notification createNotification(){
+	//Creates the notification that allows the user to come back to the tracking screen
+	private Notification createNotification() {
 		//Take the user to the Tracking Activity when clicking on the notification
 		Intent notificationIntent = new Intent(this, TrackingActivity.class);
 		PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
@@ -192,7 +252,7 @@ public class LocationService extends Service {
 
 	@Override
 	public void onDestroy() {
-		Toast.makeText(this, "Service Stopped!", Toast.LENGTH_SHORT).show();
+		//Toast.makeText(this, "Service Stopped!", Toast.LENGTH_SHORT).show();
 		super.onDestroy();
 	}
 

@@ -14,7 +14,8 @@ public class App extends Application {
 		super.onCreate();
 	}
 
-	private void createNotificationChannel(){
+	//Creates the one channel on which the service notification will be displayed
+	private void createNotificationChannel() {
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
 			NotificationChannel serviceChannel = new NotificationChannel(
 					CHANNEL_ID,
