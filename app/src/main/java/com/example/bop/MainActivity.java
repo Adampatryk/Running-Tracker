@@ -87,8 +87,10 @@ public class MainActivity extends AppCompatActivity {
 							currentFragment = HOME_FRAGMENT;
 							break;
 						case (R.id.nav_record):
-							checkLocationPermission();
-							selectedFragment = new RecordFragment();
+							//Check if the location permission is granted before switching to fragment with a map on it
+							if (checkLocationPermission()){
+								selectedFragment = new RecordFragment();
+							}
 							break;
 						case (R.id.nav_profile):
 							selectedFragment = new ProfileFragment();
@@ -101,21 +103,21 @@ public class MainActivity extends AppCompatActivity {
 						getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, selectedFragment).commit();
 					}
 
-
-
 					//Select the selected nav button
 					return true;
 				}
 			};
 
-	private void checkLocationPermission(){
+	private boolean checkLocationPermission(){
 		if (ContextCompat.checkSelfPermission(MainActivity.this,
 				Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
+			//Request the user for the location permission
 			ActivityCompat.requestPermissions(MainActivity.this,
 					new String[] {Manifest.permission.ACCESS_FINE_LOCATION}, ACCESS_FINE_LOCATION);
-		} else {
+			return false;
 		}
+		return true;
 	}
 
 	@Override
@@ -135,6 +137,10 @@ public class MainActivity extends AppCompatActivity {
 			else {
 				//The permission was allowed and the current fragment becomes the RECORD_FRAGMENT
 				currentFragment = RECORD_FRAGMENT;
+				selectedFragment = new RecordFragment();
+
+				//Switch to the RecordFragment
+				getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, selectedFragment).commit();
 			}
 		}
 	}
