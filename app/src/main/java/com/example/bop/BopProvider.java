@@ -17,6 +17,13 @@ public class BopProvider extends ContentProvider {
 	private static final int ACTIVITY_ALL_INFO_CODE = 1;
 	private static final int ACTIVITY_ID_CODE = 2;
 	private static final int ACTIVITY_ID_TRK_POINTS_CODE = 3;
+	public static final int SESSIONS_COUNT_CODE = 4;
+	public static final int TOTAL_TIME_CODE = 5;
+	public static final int LONGEST_TIME_CODE = 6;
+	public static final int AVERAGE_TIME_CODE = 7;
+	public static final int TOTAL_DISTANCE_CODE = 8;
+	public static final int LONGEST_DISTANCE_CODE = 9;
+	public static final int AVERAGE_DISTANCE_CODE = 10;
 
 	DBHelper dbHelper = null;
 
@@ -27,6 +34,13 @@ public class BopProvider extends ContentProvider {
 		uriMatcher.addURI(BopProviderContract.AUTHORITY, BopProviderContract.ACTIVITY_TABLE, ACTIVITY_ALL_INFO_CODE);
 		uriMatcher.addURI(BopProviderContract.AUTHORITY, BopProviderContract.ACTIVITY_TABLE + "/#", ACTIVITY_ID_CODE);
 		uriMatcher.addURI(BopProviderContract.AUTHORITY, BopProviderContract.TRK_POINT_TABLE, ACTIVITY_ID_TRK_POINTS_CODE);
+		uriMatcher.addURI(BopProviderContract.AUTHORITY, BopProviderContract.SESSIONS_COUNT, SESSIONS_COUNT_CODE);
+		uriMatcher.addURI(BopProviderContract.AUTHORITY, BopProviderContract.TOTAL_TIME, TOTAL_TIME_CODE);
+		uriMatcher.addURI(BopProviderContract.AUTHORITY, BopProviderContract.LONGEST_TIME, LONGEST_TIME_CODE);
+		uriMatcher.addURI(BopProviderContract.AUTHORITY, BopProviderContract.AVERAGE_TIME, AVERAGE_TIME_CODE);
+		uriMatcher.addURI(BopProviderContract.AUTHORITY, BopProviderContract.TOTAL_DISTANCE, TOTAL_DISTANCE_CODE);
+		uriMatcher.addURI(BopProviderContract.AUTHORITY, BopProviderContract.LONGEST_DISTANCE, LONGEST_DISTANCE_CODE);
+		uriMatcher.addURI(BopProviderContract.AUTHORITY, BopProviderContract.AVERAGE_DISTANCE, AVERAGE_DISTANCE_CODE);
 	}
 
 
@@ -52,6 +66,42 @@ public class BopProvider extends ContentProvider {
 			//This gets the info for all (or one when specified) activity
 			case ACTIVITY_ALL_INFO_CODE:
 				return db.query(BopProviderContract.ACTIVITY_TABLE, projection, selection, selectionArgs, null, null, sortOrder);
+
+			//Gets the count of the sessions
+			case SESSIONS_COUNT_CODE:
+				return db.query(BopProviderContract.ACTIVITY_TABLE, new String[] {"COUNT(*) AS "+ BopProviderContract.SESSIONS_COUNT},
+						selection, selectionArgs, null, null, null);
+
+			//Gets the total time across the queried sessions
+			case TOTAL_TIME_CODE:
+				return db.query(BopProviderContract.ACTIVITY_TABLE, new String[] {"SUM(" + BopProviderContract.ACTIVITY_DURATION + ") AS "+ BopProviderContract.TOTAL_TIME},
+						selection, selectionArgs, null, null, null);
+
+			//Gets the longest time across the queried sessions
+			case LONGEST_TIME_CODE:
+				return db.query(BopProviderContract.ACTIVITY_TABLE, new String[] {"MAX(" + BopProviderContract.ACTIVITY_DURATION + ") AS "+ BopProviderContract.LONGEST_TIME},
+						selection, selectionArgs, null, null, null);
+
+			//Gets the average time across the queried sessions
+			case AVERAGE_TIME_CODE:
+				return db.query(BopProviderContract.ACTIVITY_TABLE, new String[] {"AVG(" + BopProviderContract.ACTIVITY_DURATION + ") AS "+ BopProviderContract.AVERAGE_TIME},
+						selection, selectionArgs, null, null, null);
+
+			//Gets the total distance across the queried sessions
+			case TOTAL_DISTANCE_CODE:
+				return db.query(BopProviderContract.ACTIVITY_TABLE, new String[] {"SUM(" + BopProviderContract.ACTIVITY_DISTANCE + ") AS "+ BopProviderContract.TOTAL_DISTANCE},
+						selection, selectionArgs, null, null, null);
+
+			//Gets the longest distance across the queried sessions
+			case LONGEST_DISTANCE_CODE:
+				return db.query(BopProviderContract.ACTIVITY_TABLE, new String[] {"MAX(" + BopProviderContract.ACTIVITY_DISTANCE + ") AS "+ BopProviderContract.LONGEST_DISTANCE},
+						selection, selectionArgs, null, null, null);
+
+			//Gets the average distance across the queried sessions
+			case AVERAGE_DISTANCE_CODE:
+				return db.query(BopProviderContract.ACTIVITY_TABLE, new String[] {"AVG(" + BopProviderContract.ACTIVITY_DISTANCE + ") AS "+ BopProviderContract.AVERAGE_DISTANCE},
+						selection, selectionArgs, null, null, null);
+
 			default:
 				return null;
 		}

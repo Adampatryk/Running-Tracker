@@ -176,14 +176,27 @@ public class TrackedSession {
 	}
 
 	String getDistanceString(){
-		return distanceToString(distance);
+		return distanceToString(distance, true);
 	}
 
-	static String distanceToString(float distance){
+	static String distanceToString(float distance, boolean labelled){
 		int metres = Math.round(distance);
 		int km = metres/1000;
 		metres = metres % 1000;
-		return String.format(Locale.UK, "%d.%03d", km, metres);
+		String format = "%d";
+
+		if (km == 0) {
+			if (labelled){
+				format += "m";
+			}
+			return String.format(Locale.UK, format, metres);
+		}
+
+		format = "%d.%03d";
+		if (labelled){
+			format += "km";
+		}
+		return String.format(Locale.UK, format, km, metres);
 	}
 
 	public float getAvgSpeed(){

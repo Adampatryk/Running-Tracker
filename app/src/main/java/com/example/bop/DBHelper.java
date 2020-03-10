@@ -13,7 +13,7 @@ public class DBHelper extends SQLiteOpenHelper {
 	private SQLiteDatabase db;
 
 	public DBHelper(Context context) {
-		super(context, DATABASE_NAME, null, 2);
+		super(context, DATABASE_NAME, null, 4);
 		Log.d(TAG, "DBHelper: Constructor called");
 		getWritableDatabase();
 	}
@@ -40,7 +40,7 @@ public class DBHelper extends SQLiteOpenHelper {
 		//Create activity table to store tracked sessions/activities by the user
 		db.execSQL("CREATE TABLE activity (_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT," +
 				"title VARCHAR(128) NOT NULL," +
-				"datetime DATETIME," +
+				"datetime INTEGER," +
 				"description VARCHAR(512) NOT NULL," +
 				"rating INTEGER," +
 				"activity_type VARCHAR(64)," +

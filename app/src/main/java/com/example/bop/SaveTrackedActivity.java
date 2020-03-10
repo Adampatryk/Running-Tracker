@@ -144,15 +144,12 @@ public class SaveTrackedActivity extends AppCompatActivity {
 		locationServiceBinder.setTitle(editTextTitle.getText().toString());
 		locationServiceBinder.setDescription(editTextDescription.getText().toString());
 
-
 		//Save the tracked session data
-		BopProvider bopProvider = new BopProvider();
-
 		ContentValues sessionValues = new ContentValues();
 		sessionValues.put(BopProviderContract.ACTIVITY_TITLE, locationServiceBinder.getTitle());
 		sessionValues.put(BopProviderContract.ACTIVITY_DESCRIPTION, locationServiceBinder.getDescription());
 		sessionValues.put(BopProviderContract.ACTIVITY_ACTIVITY_TYPE, "Run");
-		sessionValues.put(BopProviderContract.ACTIVITY_DATETIME, locationServiceBinder.getTimeCreated().toString());
+		sessionValues.put(BopProviderContract.ACTIVITY_DATETIME, locationServiceBinder.getTimeCreated().getTime());
 		sessionValues.put(BopProviderContract.ACTIVITY_DISTANCE, locationServiceBinder.getDistance());
 		sessionValues.put(BopProviderContract.ACTIVITY_DURATION, locationServiceBinder.getDuration());
 		sessionValues.put(BopProviderContract.ACTIVITY_AVG_SPEED, locationServiceBinder.getAvgSpeed());

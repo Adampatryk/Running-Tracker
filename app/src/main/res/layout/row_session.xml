@@ -23,7 +23,7 @@
         android:paddingTop="10sp"
         android:paddingRight="20sp"
         android:paddingLeft="20sp"
-        android:textSize="20sp"
+        android:textSize="30sp"
         android:textColor="@android:color/white"
         android:gravity="center"
         app:layout_constraintEnd_toEndOf="parent"
@@ -62,7 +62,7 @@
             android:gravity="center"/>
 
         <TextView
-            android:id="@+id/text_view_date_label"
+            android:id="@+id/text_view_row_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"

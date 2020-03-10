@@ -93,7 +93,7 @@ public class SessionDetailsActivity extends AppCompatActivity implements OnMapRe
 
 		String title = recordData.get(1);
 		String description = recordData.get(3);
-		String distance = TrackedSession.distanceToString(Float.parseFloat(recordData.get(9))) + "km";
+		String distance = TrackedSession.distanceToString(Float.parseFloat(recordData.get(9)), true);
 		String time = TrackedSession.timeToString(Long.parseLong(recordData.get(6)));
 
 		//If an image exists in the database set the image

@@ -47,9 +47,6 @@ public class TrackingActivity extends AppCompatActivity {
 			//Set the average speed
 			avgSpeedTextView.setText(locationServiceBinder.getAvgSpeedString());
 
-			//Set the elevation
-			elevationTextView.setText(locationServiceBinder.getElevationString());
-
 			if (!stopped) updateStatsHandler.postDelayed(this, 1000);
 		}
 	};

@@ -47,16 +47,19 @@ public class HomeFragment extends Fragment {
 
 		int[] to = new int[]{
 				R.id.text_view_row_title,
-				R.id.text_view_distance,
-				R.id.text_view_date_label,
+				R.id.text_view_row_distance,
+				R.id.text_view_row_date,
 				R.id.text_view_row_time,
 				R.id.text_view_row_id
 		};
 
-		c = getContext().getContentResolver().query(BopProviderContract.ACTIVITY_URI, columns, null, null, null);
+		c = getContext().getContentResolver().query(BopProviderContract.ACTIVITY_URI, columns, null, null, BopProviderContract.ACTIVITY_DATETIME + " DESC");
 
-		simpleCursorAdapter = new SimpleCursorAdapter(getContext(), R.layout.row_session, c, columns, to, 0);
-		sessionsListView.setAdapter(simpleCursorAdapter);
+//		simpleCursorAdapter = new SimpleCursorAdapter(getContext(), R.layout.row_session, c, columns, to, 0);
+//		sessionsListView.setAdapter(simpleCursorAdapter);
+
+		SessionCursorAdapter sessionCursorAdapter = new SessionCursorAdapter(getContext(), c);
+		sessionsListView.setAdapter(sessionCursorAdapter);
 
 		final Intent goToSessionDetailsActivity = new Intent(getContext(), SessionDetailsActivity.class);
 		sessionsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {

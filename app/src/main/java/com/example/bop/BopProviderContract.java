@@ -34,8 +34,25 @@ public class BopProviderContract {
 	public static final String CONTENT_TYPE_SINGLE = "vnd.android.cursor.item/BopProvider.data.text";
 	public static final String CONTENT_TYPE_MULTIPLE = "vnd.android.cursor.dir/BopProvider.data.text";
 
-	//Uris
+	//URIs
 	public static final Uri ACTIVITY_URI = Uri.parse("content://"+AUTHORITY + "/" + ACTIVITY_TABLE);
 	public static final Uri TRK_POINT_URI = Uri.parse("content://"+AUTHORITY + "/" + TRK_POINT_TABLE);
-	public static final Uri ALL_URI = Uri.parse("content://"+AUTHORITY+"/");
+
+	//VALUES
+	public static final String SESSIONS_COUNT = "sessions_count";
+	public static final String TOTAL_TIME = "total_time";
+	public static final String LONGEST_TIME = "longest_time";
+	public static final String AVERAGE_TIME = "avg_time";
+	public static final String TOTAL_DISTANCE = "total_distance";
+	public static final String LONGEST_DISTANCE = "longest_distance";
+	public static final String AVERAGE_DISTANCE = "avg_distance";
+
+	//Value URIs
+	public static final Uri SESSIONS_COUNT_URI = Uri.parse("content://"+AUTHORITY + "/" + SESSIONS_COUNT);
+	public static final Uri TOTAL_DISTANCE_URI = Uri.parse("content://"+AUTHORITY + "/" + TOTAL_DISTANCE);
+	public static final Uri TOTAL_TIME_URI = Uri.parse("content://"+AUTHORITY + "/" + TOTAL_TIME);
+	public static final Uri LONGEST_TIME_URI = Uri.parse("content://"+AUTHORITY + "/" + LONGEST_TIME);
+	public static final Uri AVERAGE_TIME_URI = Uri.parse("content://"+AUTHORITY + "/" + AVERAGE_TIME);
+	public static final Uri LONGEST_DISTANCE_URI = Uri.parse("content://"+AUTHORITY + "/" + LONGEST_DISTANCE);
+	public static final Uri AVERAGE_DISTANCE_URI = Uri.parse("content://"+AUTHORITY + "/" + AVERAGE_DISTANCE);
 }
