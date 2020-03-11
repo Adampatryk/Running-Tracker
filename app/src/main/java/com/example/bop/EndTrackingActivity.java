@@ -13,6 +13,8 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.google.android.gms.common.api.ResolvableApiException;
@@ -32,12 +34,18 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 //This activity allows the user to look over the details of their run and either resume or continue
 //on to end and save the run in a different activity
-public class EndTrackingActivity extends FragmentActivity implements OnMapReadyCallback {
+public class EndTrackingActivity extends FragmentActivity implements OnMapReadyCallback, AdapterView.OnItemSelectedListener {
 	private static final String TAG = "EndTrackingActivity";
 	TextView timeTextView, distanceTextView, avgSpeedTextView, elevationTextView;
+
+	//Spinner and spinner values
+	Spinner chooseActivitySpinner;
+	String[] spinnerItemsArray;
+
 	GoogleMap map;
 	//Before points can be plotted on the map, the map must be ready and the service must be bound
 	Boolean mapReady = false, isBound = false;
@@ -49,6 +57,13 @@ public class EndTrackingActivity extends FragmentActivity implements OnMapReadyC
 		public void onServiceConnected(ComponentName name, IBinder service) {
 			Log.d(TAG, "onServiceConnected: ");
 			locationServiceBinder = (LocationService.LocationServiceBinder) service;
+
+			//If the activity type was set to detect, use average speed to automatically choose one
+			int activityTypeInd = locationServiceBinder.getActivityType();
+			if (activityTypeInd == 0){
+				activityTypeInd = TrackedSession.getPredictedActivityType(locationServiceBinder.getAvgSpeed());
+			}
+			chooseActivitySpinner.setSelection(activityTypeInd);
 			isBound = true;
 			updateStats();
 			plotTrackPoints();
@@ -77,8 +92,30 @@ public class EndTrackingActivity extends FragmentActivity implements OnMapReadyC
 		MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
 		mapFragment.getMapAsync(this);
 
+		//Set up spinner
+		chooseActivitySpinner = findViewById(R.id.spinner_activity_type);
+
+		ArrayList<String> spinnerAdapterData = new ArrayList<>();
+		spinnerItemsArray = getResources().getStringArray(R.array.activity_types);
+		Collections.addAll(spinnerAdapterData, spinnerItemsArray);
+		SpinnerAdapter adapter = new SpinnerAdapter(this, R.layout.adapter_spinner, spinnerAdapterData, getResources());
+
+		chooseActivitySpinner.setOnItemSelectedListener(this);
+		chooseActivitySpinner.setAdapter(adapter);
+
 		//Bind to service
 		getApplicationContext().bindService(intent, serviceConnection, Context.BIND_ABOVE_CLIENT);
+	}
+
+	//Spinner methods
+	@Override
+	public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+		locationServiceBinder.setActivityType(i);
+	}
+
+	@Override
+	public void onNothingSelected(AdapterView<?> adapterView) {
+
 	}
 
 	void updateStats() {

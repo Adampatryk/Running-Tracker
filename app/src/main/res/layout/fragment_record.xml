@@ -21,31 +21,17 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         map:cameraZoom="13"
-        app:layout_constraintBottom_toTopOf="@id/button_choose_sport"
+        app:layout_constraintBottom_toTopOf="@id/spinner_choose_activity"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"/>
 
-<!--    <FrameLayout-->
-<!--        android:id="@+id/map_frame"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="0dp"-->
-<!--        app:layout_constraintBottom_toTopOf="@id/button_choose_sport"-->
-<!--        app:layout_constraintTop_toTopOf="parent"-->
-<!--        app:layout_constraintLeft_toLeftOf="parent"-->
-<!--        app:layout_constraintRight_toRightOf="parent"/>-->
-
-    <Button
-        android:id="@+id/button_choose_sport"
+    <Spinner
+        android:id="@+id/spinner_choose_activity"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="CHOOSE SPORT"
-        android:padding="15sp"
-        android:background="@android:color/white"
-        android:textSize="25sp"
-        android:textColor="@color/colorPrimary"
-        app:layout_constraintBottom_toTopOf="@+id/button_start_tracking"
-        />
+        android:background="@color/colorPrimary"
+        app:layout_constraintBottom_toTopOf="@id/button_start_tracking"/>
 
     <Button
         android:id="@+id/button_start_tracking"
@@ -57,7 +43,7 @@
         android:textSize="30sp"
         android:background="@color/colorPrimary"
         android:textColor="@android:color/white"
-        android:padding="15sp"
+        android:padding="30sp"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

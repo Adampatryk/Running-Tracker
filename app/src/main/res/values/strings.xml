@@ -1,6 +1,20 @@
 <resources>
+    <string-array name="activity_types">
+        <item>detect activity type</item>
+        <item>run</item>
+        <item>walk</item>
+        <item>cycle</item>
+    </string-array>
     <string name="app_name">Bop</string>
     <string name="profile">Profile</string>
     <string name="record">Record</string>
     <string name="home">Home</string>
+    <string name="activity">activity</string>
+    <string name="no_tracked_sessions_message">You don\'t have any tracked sessions yet!</string>
+    <string name="this_week">this week</string>
+    <string name="this_month">this month</string>
+    <string name="all_time">all time</string>
+    <string name="stop">stop</string>
+    <string name="distance_label">distance</string>
+    <string name="choose_activity">choose activity</string>
 </resources>

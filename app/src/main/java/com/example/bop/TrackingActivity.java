@@ -1,6 +1,6 @@
 package com.example.bop;
 
-import androidx.annotation.Nullable;
+import com.example.bop.R;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.BroadcastReceiver;
@@ -24,6 +24,7 @@ public class TrackingActivity extends AppCompatActivity {
 	private static final String TAG = "TrackingActivity";
 	LocationService.LocationServiceBinder locationServiceBinder = null;
 	TextView timeTextView, distanceTextView, avgSpeedTextView, elevationTextView;
+	int activityTypeInd;
 	Handler updateTimeHandler = new Handler();
 	Handler updateStatsHandler = new Handler();
 	boolean stopped = false, isBound = false;
@@ -75,6 +76,9 @@ public class TrackingActivity extends AppCompatActivity {
 			locationServiceBinder = (LocationService.LocationServiceBinder) service;
 			locationServiceBinder.resumeTracking();
 
+			//Set the activity type
+			locationServiceBinder.setActivityType(activityTypeInd);
+
 			//When the service is connected, make sure the receiver is listening for location setting changes
 			registerReceiver(locationSettingStateReceiver, new IntentFilter(LocationManager.PROVIDERS_CHANGED_ACTION));
 
@@ -97,6 +101,13 @@ public class TrackingActivity extends AppCompatActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_tracking);
+
+		//If the activity type was sent, assign it
+		Bundle bundle = getIntent().getExtras();
+
+		if (bundle != null && !bundle.isEmpty()){
+			activityTypeInd = bundle.getInt(BopProviderContract.ACTIVITY_ACTIVITY_TYPE);
+		}
 
 		//Start the location tracking service
 		Intent intent = new Intent(this, LocationService.class);

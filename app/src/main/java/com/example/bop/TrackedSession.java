@@ -29,6 +29,7 @@ public class TrackedSession {
 	private ArrayList<Location> trkPoints = new ArrayList<>();
 	private Bitmap image;
 	private int rating = 5;
+	private int activityType;
 
 	private float totalSpeedForRunningAverage = 0;
 	private int totalTrkPointsWithSpeedForRunningAverage = 0;
@@ -138,6 +139,22 @@ public class TrackedSession {
 
 	//Getters and setters
 
+	//Use the average speed to determine activity type
+	static int getPredictedActivityType(float avgSpeed) {
+		if (avgSpeed < 8) { // less than 8km/h
+			return 2; // walking
+		}
+		else if (avgSpeed < 15) // less than 15 km/h
+			return 1; //running
+		else { return 3;} //cycling if more than 15 km/h
+	}
+
+	void setActivityType(int activityTypeInd){
+		this.activityType = activityTypeInd;
+	}
+
+	int getActivityType() {return activityType; }
+
 	int getRating() {
 		return rating;
 	}
@@ -196,11 +213,11 @@ public class TrackedSession {
 			if (mins == 0) {
 				return String.format(Locale.UK, "%d.%02ds", secs, centisecs);
 			} else {
-				return String.format(Locale.UK, "%d:%02d.%02ds", mins, secs, centisecs);
+				return String.format(Locale.UK, "%dm %02ds", mins, secs, centisecs);
 			}
 		}
 
-		return String.format(Locale.UK, "%d:%02d:%02d.%02ds", hrs, mins, secs, centisecs);
+		return String.format(Locale.UK, "%dh %02dm", hrs, mins);
 
 	}
 
@@ -227,7 +244,8 @@ public class TrackedSession {
 			return String.format(Locale.UK, format, metres);
 		}
 
-		format = "%d.%03d";
+		metres = metres/10;
+		format = "%d.%02d";
 		if (labelled) {
 			format += "km";
 		}

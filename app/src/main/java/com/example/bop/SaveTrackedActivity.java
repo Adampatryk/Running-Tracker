@@ -23,6 +23,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.SeekBar;
+import android.widget.Toast;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -250,7 +251,8 @@ public class SaveTrackedActivity extends AppCompatActivity {
 		ContentValues sessionValues = new ContentValues();
 		sessionValues.put(BopProviderContract.ACTIVITY_TITLE, locationServiceBinder.getTitle());
 		sessionValues.put(BopProviderContract.ACTIVITY_DESCRIPTION, locationServiceBinder.getDescription());
-		sessionValues.put(BopProviderContract.ACTIVITY_ACTIVITY_TYPE, "Run"); // Ready to implement different activity types
+		Toast.makeText(this, "" + locationServiceBinder.getActivityTypeString(), Toast.LENGTH_SHORT).show();
+		sessionValues.put(BopProviderContract.ACTIVITY_ACTIVITY_TYPE, locationServiceBinder.getActivityTypeString());
 		sessionValues.put(BopProviderContract.ACTIVITY_DATETIME, locationServiceBinder.getTimeCreated().getTime());
 		sessionValues.put(BopProviderContract.ACTIVITY_DISTANCE, locationServiceBinder.getDistance());
 		sessionValues.put(BopProviderContract.ACTIVITY_DURATION, locationServiceBinder.getDuration());

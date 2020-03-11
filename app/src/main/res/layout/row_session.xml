@@ -1,75 +1,120 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/listview_row_shape">
+    android:background="@drawable/listview_row_shape"
+    android:padding="20sp">
 
     <TextView
         android:id="@+id/text_view_row_id"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:visibility="gone"/>
-
-    <TextView
-        android:id="@+id/text_view_row_title"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        tools:text="A Very Happy Morning Run"
-        android:paddingTop="10sp"
-        android:paddingRight="20sp"
-        android:paddingLeft="20sp"
-        android:textSize="30sp"
-        android:textColor="@android:color/white"
-        android:gravity="center"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
+        android:id="@+id/row_top_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/text_view_row_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:maxLines="1"
+            android:textColor="@android:color/white"
+            android:textSize="27sp"
+            tools:text="A Very Happy Morning" />
+<!--        <TextView-->
+<!--            android:layout_width="10sp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:textAllCaps="true"-->
+<!--            android:gravity="center"-->
+<!--            android:textColor="@android:color/white"-->
+<!--            android:textSize="27sp"-->
+<!--            tools:text="|" />-->
+        <TextView
+            android:id="@+id/text_view_activity_type"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:textAllCaps="true"
+            android:gravity="end"
+            android:textColor="@android:color/white"
+            android:textSize="27sp"
+            android:maxLines="1"
+            tools:text="WALK" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/row_details"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:padding="3sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_view_row_title"
-        android:padding="3sp">
-
-        <TextView
-            android:id="@+id/text_view_row_distance"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            tools:text="12.5km"
-            android:padding="10sp"
-            android:textColor="@android:color/white"
-            android:gravity="center"/>
-
-        <TextView
-            android:id="@+id/text_view_row_time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            tools:text="10:54"
-            android:padding="10sp"
-            android:textColor="@android:color/white"
-            android:gravity="center"/>
+        app:layout_constraintTop_toBottomOf="@id/row_top_info">
 
         <TextView
             android:id="@+id/text_view_row_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            tools:text="5th Sept"
+            android:gravity="center"
             android:padding="10sp"
             android:textColor="@android:color/white"
-            android:gravity="center"/>
+            android:textSize="20sp"
+            tools:text="5th Sept" />
+
+        <TextView
+            android:id="@+id/text_view_row_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:padding="10sp"
+            android:textSize="20sp"
+            android:textColor="@android:color/white"
+            tools:text="10:54" />
+
+        <TextView
+            android:id="@+id/text_view_row_distance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="20sp"
+            android:gravity="center"
+            android:padding="10sp"
+            android:textColor="@android:color/white"
+            tools:text="12.5km" />
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/text_view_row_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/darker_gray"
+        android:textSize="15sp"
+        android:padding="10sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/row_details"
+        tools:text="Felt really good but i wish I went a little longer" />
+
+    <ImageView
+        android:id="@+id/row_image"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scaleType="centerCrop"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/text_view_row_description" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

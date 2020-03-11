@@ -27,7 +27,7 @@ import java.util.ArrayList;
 public class SessionDetailsActivity extends AppCompatActivity implements OnMapReadyCallback {
 
 	int session_id;
-	TextView session_title, session_description, session_distance, session_time, session_rating;
+	TextView session_title, session_description, session_distance, session_time, session_rating, activity_type;
 	GoogleMap map;
 	ImageView imageView;
 
@@ -53,6 +53,7 @@ public class SessionDetailsActivity extends AppCompatActivity implements OnMapRe
 		session_time = findViewById(R.id.text_view_session_time);
 		imageView = findViewById(R.id.image_view_session_image);
 		session_rating = findViewById(R.id.text_view_session_rating);
+		activity_type = findViewById(R.id.text_view_activity_type);
 
 		//Find all relevant data and set it to the views for the session_id
 		querySession(session_id);
@@ -101,6 +102,7 @@ public class SessionDetailsActivity extends AppCompatActivity implements OnMapRe
 		String distance = TrackedSession.distanceToString(Float.parseFloat(recordData.get(9)), true);
 		String time = TrackedSession.timeToString(Long.parseLong(recordData.get(6)));
 		String rating = recordData.get(4);
+		String activityType = recordData.get(5);
 
 		//If an image exists in the database set the image
 		if (bitmap != null) {
@@ -113,6 +115,7 @@ public class SessionDetailsActivity extends AppCompatActivity implements OnMapRe
 		session_distance.setText(distance);
 		session_time.setText(time);
 		session_rating.setText(rating);
+		activity_type.setText(activityType);
 	}
 
 	//Allow the user to delete the tracked session

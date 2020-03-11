@@ -74,13 +74,13 @@ public class ProfileFragment extends Fragment {
 		cal.set(Calendar.DAY_OF_WEEK, cal.getFirstDayOfWeek());
 		//Get the millisecond conversion of the first day of the week and assign the SQL statement to say
 		//to get everything above that value
-		thisWeekString = BopProviderContract.ACTIVITY_DATETIME + " > " + cal.getTimeInMillis();
+		thisWeekString = BopProviderContract.ACTIVITY_DATETIME + " >= " + cal.getTimeInMillis();
 
 		//Set the day to the first of the month
 		cal.set(Calendar.DAY_OF_MONTH, 1);
 		//Get the millisecond conversion of the first day of the month and assign the SQL statement to say
 		//to get everything above that value
-		thisMonthString = BopProviderContract.ACTIVITY_DATETIME + " > " + cal.getTimeInMillis();
+		thisMonthString = BopProviderContract.ACTIVITY_DATETIME + " >= " + cal.getTimeInMillis();
 	}
 
 	//Visually changes the buttons, changing the backgrounds and text colours, then updates the

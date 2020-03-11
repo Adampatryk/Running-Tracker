@@ -59,11 +59,6 @@ public class LocationService extends Service {
 	//Defines the communication functions
 	public class LocationServiceBinder extends Binder {
 
-		//Check if the session is currently paused
-		boolean isPaused() {
-			return trackedSession.isPaused();
-		}
-
 		//Continue / or start tracking
 		void resumeTracking() {
 			resumeLocationTracking();
@@ -75,6 +70,18 @@ public class LocationService extends Service {
 		}
 
 		//Getters and setters
+
+		int getActivityType() { return trackedSession.getActivityType(); }
+
+		String getActivityTypeString( ) { return getResources().getStringArray(R.array.activity_types)[getActivityType()]; }
+
+		//Set the activity type
+		void setActivityType(int activityTypeInd){ trackedSession.setActivityType(activityTypeInd); }
+
+		//Check if the session is currently paused
+		boolean isPaused() {
+			return trackedSession.isPaused();
+		}
 
 		//Get the tracked session
 		TrackedSession getTrackedActivity() {

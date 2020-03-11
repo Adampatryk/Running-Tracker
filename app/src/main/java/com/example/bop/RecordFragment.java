@@ -8,8 +8,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.Toast;
+import android.widget.Spinner;
 
 import com.google.android.gms.common.api.ResolvableApiException;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -28,17 +29,24 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 
+import java.util.ArrayList;
+import java.util.Collections;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 //This is the fragment that ensures that users have their location on and have granted location permission
 //and let the user continue on to track a session
-public class RecordFragment extends Fragment implements OnMapReadyCallback, GoogleMap.OnMyLocationButtonClickListener, GoogleMap.OnMyLocationClickListener {
+public class RecordFragment extends Fragment implements OnMapReadyCallback,
+		GoogleMap.OnMyLocationButtonClickListener, GoogleMap.OnMyLocationClickListener, AdapterView.OnItemSelectedListener {
+
 	private static final String TAG = "RecordFragment";
 
 	private Button button_start_tracking;
-	private Button button_choose_sport;
+	Spinner chooseActivitySpinner;
+	String[] spinnerItemsArray;
+	private int activityTypeInd;
 
 	private MapView mapView;
 	private GoogleMap googleMap;
@@ -52,7 +60,6 @@ public class RecordFragment extends Fragment implements OnMapReadyCallback, Goog
 		//Inflate the fragment view to the container it belongs to
 		View v = inflater.inflate(R.layout.fragment_record, container, false);
 
-		button_choose_sport = v.findViewById(R.id.button_choose_sport);
 		button_start_tracking = v.findViewById(R.id.button_start_tracking);
 
 		//When the start tracking activity is pressed, the service is started to track GPS location
@@ -80,7 +87,28 @@ public class RecordFragment extends Fragment implements OnMapReadyCallback, Goog
 		mapView.onCreate(mapViewBundle);
 		mapView.getMapAsync(this);
 
+		//Set up spinner
+		chooseActivitySpinner = v.findViewById(R.id.spinner_choose_activity);
+
+		ArrayList<String> spinnerAdapterData = new ArrayList<>();
+		spinnerItemsArray = getResources().getStringArray(R.array.activity_types);
+		Collections.addAll(spinnerAdapterData, spinnerItemsArray);
+		SpinnerAdapter adapter = new SpinnerAdapter(this.getActivity(), R.layout.adapter_spinner, spinnerAdapterData, getResources());
+
+		chooseActivitySpinner.setOnItemSelectedListener(this);
+		chooseActivitySpinner.setAdapter(adapter);
+
 		return v;
+	}
+
+	@Override
+	public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+		activityTypeInd = i;
+	}
+
+	@Override
+	public void onNothingSelected(AdapterView<?> adapterView) {
+
 	}
 
 	//Try to start tracking service but only if location setting is on, otherwise ask the user to turn
@@ -116,6 +144,8 @@ public class RecordFragment extends Fragment implements OnMapReadyCallback, Goog
 	//Go to the tracking activity and fire up the location service to start tracking the session
 	public void startTrackingActivity() {
 		Intent activityIntent = new Intent(getContext(), TrackingActivity.class);
+		//Send across the activity type value from the spinner
+		activityIntent.putExtra(BopProviderContract.ACTIVITY_ACTIVITY_TYPE, activityTypeInd);
 		startActivity(activityIntent);
 
 		Intent serviceIntent = new Intent(getContext(), LocationService.class);
@@ -221,4 +251,5 @@ public class RecordFragment extends Fragment implements OnMapReadyCallback, Goog
 	public void onMyLocationClick(@NonNull Location location) {
 		return;
 	}
+
 }

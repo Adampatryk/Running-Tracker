@@ -43,7 +43,10 @@ public class HomeFragment extends Fragment {
 				BopProviderContract.ACTIVITY_DISTANCE,
 				BopProviderContract.ACTIVITY_DATETIME,
 				BopProviderContract.ACTIVITY_DURATION,
-				BopProviderContract.ACTIVITY_ID
+				BopProviderContract.ACTIVITY_ID,
+				BopProviderContract.ACTIVITY_DESCRIPTION,
+				BopProviderContract.ACTIVITY_ACTIVITY_TYPE,
+				BopProviderContract.ACTIVITY_IMAGE
 		};
 
 		//Query for all the sessions, date descending so the newest sessions are on the top

@@ -4,154 +4,185 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".EndTrackingActivity"
-    >
-
-    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
-        app:layout_constraintTop_toTopOf="parent"
-        android:name="com.google.android.gms.maps.MapFragment"
-        android:id="@+id/map"
-        android:layout_width="match_parent"
-        android:layout_height="300sp"/>
-
-    <TextView
-        android:id="@+id/text_view_time_label"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="TIME"
-        android:textAlignment="center"
-        android:gravity="center"
-        android:textSize="18sp"
-        app:layout_constraintTop_toBottomOf="@id/map" />
-
-    <TextView
-        android:id="@+id/text_view_time"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="00:00:00.0"
-        android:textAlignment="center"
-        android:gravity="center"
-        android:textSize="70sp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/text_view_time_label"
-        tools:layout_editor_absoluteY="24dp" />
-
-    <TextView
-        android:id="@+id/text_view_distance_label"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/text_view_time"
-        android:text="DISTANCE (km)"
-        android:layout_marginTop="20sp"
-        android:textSize="18sp"
-        android:textAlignment="center"
-        android:gravity="center"
-        />
-
-    <TextView
-        android:id="@+id/text_view_distance"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/text_view_distance_label"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        android:textSize="70sp"
-        android:text="0.0"
-        android:textAlignment="center"
-        android:gravity="center"/>
-
-    <TextView
-        android:id="@+id/text_view_speed_label"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/text_view_distance"
-        android:text="AVG SPEED (km/h)"
-        android:layout_marginTop="20sp"
-        android:textSize="18sp"
-        android:textAlignment="center"
-        />
-
-    <TextView
-        android:id="@+id/text_view_speed"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/text_view_speed_label"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        android:textSize="70sp"
-        android:text="0.0"
-        android:textAlignment="center"
-        android:gravity="center"/>
-    <TextView
-        android:id="@+id/text_view_elevation_label"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/text_view_speed"
-        android:text="ELEVATION (m)"
-        android:layout_marginTop="20sp"
-        android:textSize="18sp"
-        android:textAlignment="center"
-        android:gravity="center"
-        />
-
-    <TextView
-        android:id="@+id/text_view_elevation"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/text_view_elevation_label"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        android:textSize="70sp"
-        android:text="0.0"
-        android:textAlignment="center"
-        android:gravity="center"/>
-
-    <Button
-        android:id="@+id/button_choose_sport"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="CHOOSE SPORT"
-        android:padding="15sp"
-        android:background="@android:color/white"
-        android:textSize="25sp"
-        android:textColor="@color/colorPrimary"
-        app:layout_constraintBottom_toTopOf="@+id/bottom_resume_end_buttons"
-        />
+    tools:context=".EndTrackingActivity">
 
     <LinearLayout
-        android:id="@+id/bottom_resume_end_buttons"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        android:orientation="horizontal">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <Button
-            android:id="@+id/button_resume_tracking"
-            android:onClick="onResumeTrackingPressed"
+        <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/map"
+            android:name="com.google.android.gms.maps.MapFragment"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="RESUME"
-            android:textSize="25sp"
-            android:background="@color/colorPrimary"
-            android:padding="15sp"
-            android:textColor="@android:color/white"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
-        <Button
-            android:id="@+id/button_end_tracking"
-            android:onClick="onEndTrackingPressed"
-            android:layout_weight="1"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="END"
-            android:textSize="25sp"
-            android:background="@color/colorPrimary"
-            android:padding="15sp"
-            android:textColor="@android:color/white"/>
+            android:layout_height="match_parent"
+            android:layout_weight="0.8"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1.2"
+                android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/text_view_time_label"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="TIME"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="18sp"/>
+                <TextView
+                    android:id="@+id/text_view_distance_label"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="DISTANCE"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="18sp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/text_view_time"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:textAlignment="center"
+                    android:textSize="30sp"
+                    tools:text="43s" />
+
+                <TextView
+                    android:id="@+id/text_view_distance"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:textAlignment="center"
+                    android:textSize="30sp"
+                    tools:text="0.0km" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1.2"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/text_view_speed_label"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="AVG SPEED (km/h)"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="18sp"/>
+
+                <TextView
+                    android:id="@+id/text_view_elevation_label"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="ELEVATION (m)"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="18sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/text_view_speed"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:textAlignment="center"
+                    android:textSize="30sp"
+                    tools:text="0.0" />
+
+                <TextView
+                    android:id="@+id/text_view_elevation"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:textAlignment="center"
+                    android:textSize="30sp"
+                    tools:text="0.0" />
+
+            </LinearLayout>
+
+
+
+            <Spinner
+                android:id="@+id/spinner_activity_type"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1.2"
+                android:background="@android:color/white"/>
+
+        </LinearLayout>
+
+
+
+        <LinearLayout
+            android:id="@+id/bottom_resume_end_buttons"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1.4"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/button_resume_tracking"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@color/colorPrimary"
+                android:onClick="onResumeTrackingPressed"
+                android:text="RESUME"
+                android:textColor="@android:color/white"
+                android:textSize="25sp" />
+
+            <Button
+                android:id="@+id/button_end_tracking"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@color/colorPrimary"
+                android:onClick="onEndTrackingPressed"
+                android:text="END"
+                android:textColor="@android:color/white"
+                android:textSize="25sp" />
+
+        </LinearLayout>
 
     </LinearLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

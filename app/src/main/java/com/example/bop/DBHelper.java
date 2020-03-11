@@ -47,12 +47,12 @@ public class DBHelper extends SQLiteOpenHelper {
 				"datetime INTEGER," +
 				"description VARCHAR(512) NOT NULL," +
 				"rating INTEGER," +
-				"activity_type VARCHAR(64)," +
+				"activity_type VARCHAR(64)," + //Activity type ready to be implemented in future
 				"duration INTEGER," +
 				"avg_speed DOUBLE," +
 				"elevation INTEGER," +
 				"distance INTEGER," +
-				"calories_burned INTEGER," +
+				"calories_burned INTEGER," + //Calories burned field for future BMI calculations
 				"image BLOB);");
 
 		Log.d(TAG, "createDBSchema: Created activity table");

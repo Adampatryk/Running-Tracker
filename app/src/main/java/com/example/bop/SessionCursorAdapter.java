@@ -2,10 +2,12 @@ package com.example.bop;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CursorAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
@@ -34,6 +36,9 @@ public class SessionCursorAdapter extends CursorAdapter {
 		TextView datetimeTextView = view.findViewById(R.id.text_view_row_date);
 		TextView durationTextView = view.findViewById(R.id.text_view_row_time);
 		TextView idTextView = view.findViewById(R.id.text_view_row_id);
+		TextView activityTypeTextView = view.findViewById(R.id.text_view_activity_type);
+		TextView descriptionTextView = view.findViewById(R.id.text_view_row_description);
+		ImageView rowImageView = view.findViewById(R.id.row_image);
 
 		// Extract properties from cursor
 		String title = cursor.getString(cursor.getColumnIndexOrThrow(BopProviderContract.ACTIVITY_TITLE));
@@ -44,7 +49,7 @@ public class SessionCursorAdapter extends CursorAdapter {
 
 		//Format datetime
 		long unix_datetime = cursor.getLong(cursor.getColumnIndexOrThrow(BopProviderContract.ACTIVITY_DATETIME));
-		String datetime = new SimpleDateFormat("dd MMM yyyy hh:mma", Locale.UK).format(new Date(unix_datetime));
+		String datetime = new SimpleDateFormat("d MMM ha", Locale.UK).format(new Date(unix_datetime));
 
 		//Format the duration
 		String duration = cursor.getString(cursor.getColumnIndexOrThrow(BopProviderContract.ACTIVITY_DURATION));
@@ -52,12 +57,28 @@ public class SessionCursorAdapter extends CursorAdapter {
 
 		String id = cursor.getString(cursor.getColumnIndexOrThrow(BopProviderContract.ACTIVITY_ID));
 
+		//Cut off the description if it is too long and add ellipsis
+		String description = cursor.getString(cursor.getColumnIndexOrThrow(BopProviderContract.ACTIVITY_DESCRIPTION));
+		if (description.length() > 45) {
+			description = description.substring(0, 45) + "...";
+		}
+		//Remove the description textview if there is no description
+		if (description.trim().equals("")){
+			descriptionTextView.setVisibility(View.GONE);
+		}
+
+		String activityType = cursor.getString(cursor.getColumnIndexOrThrow(BopProviderContract.ACTIVITY_ACTIVITY_TYPE));
+
+		Bitmap imageBitmap = ImageDBHelper.getImage(cursor.getBlob(cursor.getColumnIndexOrThrow(BopProviderContract.ACTIVITY_IMAGE)));
+
 		// Populate fields with extracted properties
 		titleTextView.setText(title);
 		distanceTextView.setText(distance);
 		datetimeTextView.setText(datetime);
 		durationTextView.setText(duration);
 		idTextView.setText(id);
-
+		descriptionTextView.setText(description);
+		activityTypeTextView.setText(activityType);
+		rowImageView.setImageBitmap(imageBitmap);
 	}
 }

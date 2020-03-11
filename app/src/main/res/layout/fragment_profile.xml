@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@android:color/white"
     android:gravity="top"
-    android:background="@android:color/white">
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -16,35 +16,35 @@
             android:id="@+id/button_week"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="THIS WEEK"
-            android:background="@color/colorAccent"
-            android:textColor="@android:color/white"
-            android:textSize="17sp"
             android:layout_margin="2sp"
-            android:onClick="onWe"/>
+            android:layout_weight="1"
+            android:background="@color/colorAccent"
+            android:onClick="onWe"
+            android:text="@string/this_week"
+            android:textColor="@android:color/white"
+            android:textSize="17sp" />
 
         <Button
             android:id="@+id/button_month"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_margin="2sp"
             android:layout_weight="1"
-            android:text="THIS MONTH"
             android:background="@android:color/white"
+            android:text="@string/this_month"
             android:textColor="@color/colorPrimary"
-            android:textSize="17sp"
-            android:layout_margin="2sp"/>
+            android:textSize="17sp" />
 
         <Button
             android:id="@+id/all_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_margin="2sp"
             android:layout_weight="1"
-            android:text="THIS YEAR"
             android:background="@android:color/white"
+            android:text="@string/all_time"
             android:textColor="@color/colorPrimary"
-            android:textSize="17sp"
-            android:layout_margin="2sp"/>
+            android:textSize="17sp" />
     </LinearLayout>
 
     <ScrollView
@@ -53,147 +53,159 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="TOTAL SESSIONS"
-                android:textColor="@android:color/white"
-                android:textSize="20sp"
+                android:background="@color/colorPrimary"
                 android:gravity="center"
                 android:padding="5sp"
-                android:background="@color/colorPrimary"/>
+                android:text="TOTAL SESSIONS"
+                android:textColor="@android:color/white"
+                android:textSize="20sp" />
+
             <TextView
                 android:id="@+id/text_view_profile_sessions_count"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                tools:text="5"
+                android:gravity="center"
+                android:paddingBottom="20sp"
                 android:textColor="@color/colorPrimary"
                 android:textSize="40sp"
-                android:gravity="center"
-                android:paddingBottom="20sp"/>
+                tools:text="5" />
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="20sp"
+                android:background="@color/colorPrimary"
+                android:gravity="center"
+                android:padding="5sp"
                 android:text="TOTAL DISTANCE"
                 android:textColor="@android:color/white"
-                android:background="@color/colorPrimary"
-                android:textSize="20sp"
-                android:gravity="center"
-                android:layout_marginTop="20sp"
-                android:padding="5sp"/>
+                android:textSize="20sp" />
+
             <TextView
                 android:id="@+id/text_view_profile_total_distance"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                tools:text="15.4km"
+                android:gravity="center"
+                android:paddingBottom="20sp"
                 android:textColor="@color/colorPrimary"
                 android:textSize="40sp"
-                android:gravity="center"
-                android:paddingBottom="20sp"/>
+                tools:text="15.4km" />
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="20sp"
+                android:background="@color/colorPrimary"
+                android:gravity="center"
+                android:padding="5sp"
                 android:text="TOTAL TIME"
                 android:textColor="@android:color/white"
-                android:background="@color/colorPrimary"
-                android:textSize="20sp"
-                android:gravity="center"
-                android:layout_marginTop="20sp"
-                android:padding="5sp"/>
+                android:textSize="20sp" />
+
             <TextView
                 android:id="@+id/text_view_profile_total_time"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                tools:text="2:32:59s"
+                android:gravity="center"
+                android:paddingBottom="20sp"
                 android:textColor="@color/colorPrimary"
                 android:textSize="40sp"
-                android:gravity="center"
-                android:paddingBottom="20sp"/>
+                tools:text="2:32:59s" />
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="20sp"
+                android:background="@color/colorPrimary"
+                android:gravity="center"
+                android:padding="5sp"
                 android:text="LONGEST SESSION DISTANCE"
                 android:textColor="@android:color/white"
-                android:background="@color/colorPrimary"
-                android:textSize="20sp"
-                android:gravity="center"
-                android:layout_marginTop="20sp"
-                android:padding="5sp"/>
+                android:textSize="20sp" />
+
             <TextView
                 android:id="@+id/text_view_profile_longest_distance"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                tools:text="5.3km"
+                android:gravity="center"
+                android:paddingBottom="20sp"
                 android:textColor="@color/colorPrimary"
                 android:textSize="40sp"
-                android:gravity="center"
-                android:paddingBottom="20sp"/>
+                tools:text="5.3km" />
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="20sp"
+                android:background="@color/colorPrimary"
+                android:gravity="center"
+                android:padding="5sp"
                 android:text="LONGEST SESSION TIME"
                 android:textColor="@android:color/white"
-                android:background="@color/colorPrimary"
-                android:textSize="20sp"
-                android:gravity="center"
-                android:layout_marginTop="20sp"
-                android:padding="5sp"/>
+                android:textSize="20sp" />
+
             <TextView
                 android:id="@+id/text_view_profile_longest_time"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                tools:text="55:32s"
+                android:gravity="center"
+                android:paddingBottom="20sp"
                 android:textColor="@color/colorPrimary"
                 android:textSize="40sp"
-                android:gravity="center"
-                android:paddingBottom="20sp"/>
+                tools:text="55:32s" />
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="20sp"
+                android:background="@color/colorPrimary"
+                android:gravity="center"
+                android:padding="5sp"
                 android:text="AVERAGE DISTANCE"
                 android:textColor="@android:color/white"
-                android:background="@color/colorPrimary"
-                android:textSize="20sp"
-                android:gravity="center"
-                android:layout_marginTop="20sp"
-                android:padding="5sp"/>
+                android:textSize="20sp" />
+
             <TextView
                 android:id="@+id/text_view_profile_avg_distance"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                tools:text="5:64s"
+                android:gravity="center"
+                android:paddingBottom="20sp"
                 android:textColor="@color/colorPrimary"
                 android:textSize="40sp"
-                android:gravity="center"
-                android:paddingBottom="20sp"/>
+                tools:text="5:64s" />
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="20sp"
+                android:background="@color/colorPrimary"
+                android:gravity="center"
+                android:padding="5sp"
                 android:text="AVERAGE TIME"
                 android:textColor="@android:color/white"
-                android:background="@color/colorPrimary"
-                android:textSize="20sp"
-                android:gravity="center"
-                android:layout_marginTop="20sp"
-                android:padding="5sp"/>
+                android:textSize="20sp" />
+
             <TextView
                 android:id="@+id/text_view_profile_avg_time"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                tools:text="7:32s"
+                android:gravity="center"
+                android:paddingBottom="20sp"
                 android:textColor="@color/colorPrimary"
                 android:textSize="40sp"
-                android:gravity="center"
-                android:paddingBottom="20sp"/>
+                tools:text="7:32s" />
 
         </LinearLayout>
 
 
     </ScrollView>
-
 
 
 </LinearLayout>

@@ -17,7 +17,8 @@
             android:id="@+id/text_view_distance_label"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="DISTANCE"
+            android:text="@string/distance_label"
+            android:textAllCaps="true"
             android:textSize="18sp"
             android:textAlignment="center"
             android:gravity="center"
@@ -72,18 +73,19 @@
             android:textAlignment="center"
             android:gravity="center"
             android:layout_weight="0.9"/>
+
         <Button
             android:id="@+id/button_stop_tracking"
             android:onClick="onStopTrackingPressed"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="STOP"
+            android:text="@string/stop"
             android:background="@color/colorPrimary"
             android:textColor="@android:color/white"
             android:textSize="30sp"
             android:padding="30sp"
             android:gravity="center"
-            android:layout_weight="1"/>
+            android:layout_weight="0.9"/>
 
     </LinearLayout>
 
